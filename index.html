@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Faktur Luthfie Jaya</title>
+    <link rel="icon" type="image/png" href="img/logo.png">
+    <style>
+        /* --- RESET & GOOGLE FONTS --- */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; }
+        
+        body { 
+            background: linear-gradient(135deg, #064e3b 0%, #065f46 50%, #047857 100%); 
+            background-attachment: fixed; 
+            color: #f1f5f9; 
+            min-height: 100vh; 
+            padding: 20px; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+        }
+        
+        .container { 
+            width: 100%; 
+            max-width: 1600px; 
+            display: grid; 
+            grid-template-columns: 1fr;
+            gap: 20px; 
+            align-items: start;
+        }
+
+        @media (min-width: 1024px) { 
+            .container { grid-template-columns: 520px 1fr; gap: 30px; } 
+            body { padding: 30px; }
+        }
+
+        @media (min-width: 1400px) {
+            .container { grid-template-columns: 600px 1fr; }
+        }
+
+        /* --- GLASSMORPHISM STYLES --- */
+        .glass-panel { 
+            background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(12px); 
+            -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.15); 
+            border-radius: 16px; padding: 24px; box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3); 
+            width: 100%;
+        }
+        
+        h2, h3 { color: #ffffff; margin-bottom: 20px; font-weight: 600; letter-spacing: 0.5px; }
+        h2 { border-bottom: 2px solid rgba(255, 255, 255, 0.2); padding-bottom: 10px; }
+
+        .form-group { margin-bottom: 16px; }
+        label { display: block; font-size: 13px; color: #d1fae5; margin-bottom: 6px; font-weight: 500; }
+        
+        input { 
+            width: 100%; padding: 10px 14px; background: rgba(255, 255, 255, 0.1); 
+            border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 8px; color: #fff; 
+            font-size: 14px; transition: all 0.3s ease; 
+        }
+        input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(1); cursor: pointer; }
+        input:focus { outline: none; background: rgba(255, 255, 255, 0.2); border-color: #34d399; box-shadow: 0 0 10px rgba(52, 211, 153, 0.4); }
+        input::placeholder { color: rgba(255, 255, 255, 0.4); }
+
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+        input[type=number] { -moz-appearance: textfield; }
+
+        .customer-toggle { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+        .btn-toggle { 
+            padding: 10px 5px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.2); 
+            color: #a7f3d0; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 12px; 
+            transition: all 0.3s ease; text-align: center; 
+        }
+        .btn-toggle.active { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: #fff; border-color: transparent; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4); }
+        
+        .btn-action { 
+            width: 100%; padding: 12px; margin-top: 10px; background: linear-gradient(135deg, #10b981 0%, #059669 100%); 
+            color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; 
+            transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3); 
+        }
+        .btn-action:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(16, 185, 129, 0.5); }
+        .btn-print { background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3); }
+        .btn-print:hover { box-shadow: 0 6px 20px rgba(59, 130, 246, 0.5); }
+
+        /* --- PREVIEW FAKTUR LIVE --- */
+        .invoice-preview-wrapper { width: 100%; overflow-x: auto; border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.5); background: #ffffff; }
+        .invoice-box { background: #ffffff; color: #000000; padding: 40px; width: 100%; min-width: 850px; }
+        .invoice-box * { font-family: 'Arial', sans-serif !important; }
+        .invoice-header { display: flex; justify-content: space-between; margin-bottom: 20px; }
+        .company-details { width: 55%; }
+        
+        .company-header-container { display: flex; align-items: center; margin-bottom: 4px; gap: 12px; }
+        .company-logo { max-height: 50px; width: auto; object-fit: contain; }
+        .company-title { font-size: 24px; font-weight: bold; color: #000; margin: 0; padding: 0; line-height: 1; }
+        
+        .company-subtitle { font-size: 13px; font-weight: bold; margin-bottom: 6px; }
+        .company-address { font-size: 11px; line-height: 1.4; color: #333; }
+        .invoice-meta { width: 40%; text-align: right; display: flex; flex-direction: column; align-items: flex-end; }
+        .invoice-date { font-size: 12px; margin-bottom: 5px; }
+        .recipient-label { font-size: 11px; color: #444; }
+        .recipient-name { font-size: 16px; font-weight: bold; text-transform: uppercase; }
+        .recipient-dc { font-size: 12px; font-weight: bold; text-transform: uppercase; }
+        .faktur-no { font-size: 13px; font-weight: bold; margin-top: 15px; border-bottom: 1px solid #000; padding-bottom: 5px; margin-bottom: 15px; }
+        
+        .supplier-code-container { margin-top: 10px; border: 2px solid #000; width: 200px; text-align: center; }
+        .supplier-code-header { border-bottom: 1px solid #000; font-size: 11px; font-weight: bold; padding: 3px 0; }
+        .supplier-code-value { font-size: 24px; font-weight: bold; padding: 5px 0; }
+
+        .invoice-table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 11px; table-layout: fixed; }
+        .invoice-table th, .invoice-table td { border: 1px solid #000; padding: 6px 4px; word-wrap: break-word; overflow-wrap: break-word; }
+        .invoice-table th { font-weight: bold; text-align: center; }
+        .invoice-table td.num-col { text-align: right; }
+        .invoice-table td.center-col { text-align: center; }
+        .total-row td { font-weight: bold; }
+        .total-label { text-align: center; }
+        
+        .col-width-no { width: 5%; }
+        .col-width-name { width: 35%; }
+        .col-width-article { width: 15%; }
+        .col-width-qty { width: 8%; }
+        .col-width-trima { width: 8%; }
+        .col-width-price { width: 12%; }
+        .col-width-ket { width: 15%; }
+        .col-width-jumlah { width: 14%; }
+        
+        /* --- DYNAMIC ITEM INPUT STYLES (MENGGUNAKAN GRID AGAR RAPI) --- */
+        .order-details-container { 
+            background: rgba(255, 255, 255, 0.05); border: 1px dashed rgba(255, 255, 255, 0.3); 
+            border-radius: 12px; padding: 20px; 
+            margin-bottom: 15px; width: 100%; 
+            max-height: 60vh; 
+            overflow-y: auto; overflow-x: auto; 
+        }
+        
+        .order-details-container::-webkit-scrollbar { width: 8px; height: 8px; } 
+        .order-details-container::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); border-radius: 4px; }
+        .order-details-container::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.3); border-radius: 4px; }
+        .order-details-container::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.5); }
+
+        .items-list-wrapper { min-width: 480px; } 
+        
+        /* HEADER GRID */
+        .item-headers { 
+            display: grid; gap: 8px; margin-bottom: 8px; padding: 0 10px; align-items: center; 
+        }
+        .item-headers span { font-size: 12px; color: #a7f3d0; font-weight: 600; text-align: center; }
+        .item-headers span:first-child { text-align: left; }
+
+        /* ROW GRID */
+        .item-row { 
+            display: grid; gap: 8px; align-items: center; margin-bottom: 12px; 
+            background: rgba(0, 0, 0, 0.15); padding: 10px; border-radius: 8px; 
+            border: 1px solid rgba(255, 255, 255, 0.1); width: 100%; 
+        }
+        
+        .item-row input { 
+            margin-bottom: 0; 
+            padding: 8px 6px; /* Padding kiri kanan dikurangi agar teks Trima dll muat */
+            font-size: 13px; 
+            width: 100%;
+        }
+        
+        .btn-remove-item { 
+            background: rgba(239, 68, 68, 0.2); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.4); 
+            border-radius: 6px; width: 100%; height: 38px; 
+            display: flex; align-items: center; justify-content: center; 
+            cursor: pointer; font-weight: bold; font-size: 16px; transition: all 0.2s; 
+        }
+        .btn-remove-item:hover { background: rgba(239, 68, 68, 0.8); color: white; }
+        
+        .btn-add-item-row { background: rgba(16, 185, 129, 0.2); color: #6ee7b7; border: 1px dashed rgba(16, 185, 129, 0.4); border-radius: 8px; padding: 12px; width: 100%; cursor: pointer; font-weight: 600; font-size: 14px; transition: all 0.2s; text-align: center; margin-top: 5px; }
+        .btn-add-item-row:hover { background: rgba(16, 185, 129, 0.5); color: white; }
+
+        #import-upload-group {
+            background: rgba(16, 185, 129, 0.15); padding: 15px; border-radius: 8px; 
+            margin-bottom: 16px; border: 1px dashed #34d399; display: none; transition: all 0.3s;
+        }
+
+        @media print {
+            body { background: none !important; padding: 0 !important; color: #000 !important; display: block !important;}
+            .control-panel { display: none !important; }
+            .container { display: block !important; width: 100% !important; max-width: 100% !important; gap: 0 !important;}
+            .invoice-preview-wrapper { overflow: visible !important; box-shadow: none !important; border-radius: 0 !important; }
+            .invoice-box { padding: 0 !important; min-width: 0 !important; width: 100% !important;}
+            .web-title { display: none !important;} 
+            .company-header-container { align-items: flex-end; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="web-title" style="margin-bottom: 20px; text-align: center; width: 100%;">
+        <h1 style="font-weight: 700; color: #fff;">LUTHFIE JAYA</h1>
+        <p style="color: #a7f3d0; font-size: 14px;">Invoice Generator Platform</p>
+    </div>
+
+    <div class="container">
+        <div class="glass-panel control-panel">
+            <h2>Panel Input</h2>
+            
+            <label>Format Faktur</label>
+            <div class="customer-toggle">
+                <div id="btn-umum" class="btn-toggle active" onclick="switchCustomer('umum')">UMUM</div>
+                <div id="btn-tiptop" class="btn-toggle" onclick="switchCustomer('tiptop')">TIP TOP</div>
+                <div id="btn-yogya" class="btn-toggle" onclick="switchCustomer('yogya')">YOGYA</div>
+            </div>
+
+            <div id="import-upload-group">
+                <label id="import-label" for="input-txt" style="color: #6ee7b7; font-weight: 600; font-size: 14px;">⚡ Auto-Import PO (.TXT)</label>
+                <input type="file" id="input-txt" accept=".txt" onchange="handleUploadTxt(event)" style="background: rgba(255,255,255,0.1); padding: 8px; border: none; font-size: 12px; margin-bottom: 5px; cursor: pointer;">
+                <p style="font-size: 10px; color: #a7f3d0; margin: 0; line-height: 1.4;">*Pilih file TXT PO untuk otomatis mengekstrak Data Barang & Lokasi Toko.</p>
+            </div>
+
+            <div id="custom-customer-group" style="background: rgba(0,0,0,0.15); padding: 15px; border-radius: 8px; margin-bottom: 16px; border: 1px dashed rgba(255,255,255,0.2);">
+                <div class="form-group">
+                    <label for="input-customer">Nama Pelanggan / Tujuan</label>
+                    <input type="text" id="input-customer" placeholder="Contoh: ALAVIE KITCHEN" oninput="updateInvoice()">
+                </div>
+                <div class="form-group" style="margin-bottom: 0;">
+                    <label for="input-city">Kota / DC / Cabang Lokasi</label>
+                    <input type="text" id="input-city" placeholder="Contoh: JAKARTA" oninput="updateInvoice()">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="input-faktur">No. Faktur</label>
+                <input type="text" id="input-faktur" placeholder="Contoh: 001" oninput="updateInvoice()">
+            </div>
+
+            <div class="form-group">
+                <label for="input-tanggal">Tanggal</label>
+                <input type="date" id="input-tanggal" onchange="updateInvoice()" oninput="updateInvoice()">
+            </div>
+
+            <hr style="border: none; border-top: 1px solid rgba(255,255,255,0.2); margin: 20px 0;">
+            
+            <h3>Order Details</h3>
+            <div class="order-details-container" id="dynamic-items-container">
+                <div class="items-list-wrapper">
+                    <div class="item-headers" id="dynamic-headers"></div>
+                    <div id="items-list"></div>
+                </div>
+                <button type="button" class="btn-add-item-row" onclick="addNewItemRow()">+ Tambah Baris Barang</button>
+            </div>
+
+            <button class="btn-action btn-print" onclick="window.print()">Cetak / Simpan PDF</button>
+        </div>
+
+        <div class="invoice-preview-wrapper">
+            <div class="invoice-box">
+                <div class="invoice-header">
+                    <div class="company-details">
+                        <div class="company-header-container">
+                            <img class="company-logo" src="img/logo.png" alt="Logo Luthfie Jaya" onerror="this.style.display='none'">
+                            <div class="company-title">LUTHFIE JAYA</div>
+                        </div>
+                        <div class="company-subtitle">GENERAL SUPPLIER</div>
+                        <div class="company-address">
+                            Kp. Panyaweuyan Jati, RT.02/RW.03<br>
+                            Ciherang, Kec. Pacet, Kabupaten Cianjur, Jawa Barat 43253<br>
+                            <span id="company-phone">Telp. 0851-2156-0384, 0821-1675-6260, 0878-2245-3086</span><br>
+                            <span id="company-email">e-mail : luthfiejaya@gmail.com</span>
+                        </div>
+                    </div>
+                    
+                    <div class="invoice-meta">
+                        <div class="invoice-date" id="lbl-tanggal">..................</div>
+                        <div class="recipient-label">kepada Yth.</div>
+                        <div class="recipient-name" id="lbl-customer">..................</div>
+                        <div class="recipient-dc" id="lbl-city">..................</div>
+                        
+                        <div class="supplier-code-container" id="supplier-code-box" style="display: none;">
+                            <div class="supplier-code-header">Kode Supplier</div>
+                            <div class="supplier-code-value">L676</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faktur-no" id="lbl-faktur">FAKTUR NO. ...</div>
+
+                <table class="invoice-table" id="items-table">
+                    <colgroup id="table-colgroup"></colgroup>
+                    <thead></thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const configs = {
+            umum: {
+                phone: "Telp. 0851-2156-0384, 0821-1675-6260, 0878-2245-3086", email: "e-mail : luthfiejaya@gmail.com",
+                fakturPrefix: "FAKTUR NO. ", fakturSuffix: "", defaultFaktur: "001", showSupplierCode: false,
+                defaultName: "ALAVIE KITCHEN", defaultCity: "JAKARTA",
+                columns: ["No", "Nama Barang", "Qty Order", "Diterima", "Harga Satuan", "KETERANGAN", "Jumlah"]
+            },
+            tiptop: {
+                phone: "Telp. 0851-2156-0384, 0821-1675-6260, 0878-2245-3086", email: "e-mail : luthfiejaya@gmail.com",
+                fakturPrefix: "FAKTUR NO. ", fakturSuffix: "", defaultFaktur: "001", showSupplierCode: false,
+                defaultName: "TIP TOP", defaultCity: "BOGOR",
+                columns: ["No", "Nama Barang", "Article Code", "Qty Order", "Diterima", "Harga Satuan", "Jumlah"]
+            },
+            yogya: {
+                phone: "Telp. 0851-2156-0384, 0821-1675-6260, 0878-2245-3086", email: "e-mail : luthfiejaya@gmail.com",
+                fakturPrefix: "FAKTUR NO. - ", fakturSuffix: "", defaultFaktur: "DCK", showSupplierCode: true,
+                defaultName: "YOGYA", defaultCity: "DC KAYUMANIS",
+                columns: ["No", "Nama Barang", "Article Code", "Qty Order", "Diterima", "Harga Satuan", "Jumlah"]
+            }
+        };
+
+        let currentCustomer = "umum";
+        let items = {
+            umum: [{ id: Date.now(), name: "", article: "", qty: "", diterima: "", price: "", ket: "" }],
+            tiptop: [{ id: Date.now() + 1, name: "", article: "", qty: "", diterima: "", price: "", ket: "" }],
+            yogya: [{ id: Date.now() + 2, name: "", article: "", qty: "", diterima: "", price: "", ket: "" }]
+        };
+
+        function formatNumber(num, decimals = 2) {
+            if (num === "" || num === undefined || num === null || isNaN(num) || parseFloat(num) === 0) return "-";
+            return parseFloat(num).toLocaleString('en-US', { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
+        }
+
+        function handleUploadTxt(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const content = e.target.result;
+                const lines = content.split('\n'); 
+                let newItems = [];
+                
+                if (currentCustomer === 'yogya') {
+                    lines.forEach(line => {
+                        if (line.length > 25 && line.substring(13, 14) === 'X') {
+                            let locRaw = line.substring(24, 60).trim();
+                            let cleanLoc = locRaw.replace(/^\d+_/, '').trim();
+                            if(cleanLoc) {
+                                document.getElementById('input-city').value = cleanLoc;
+                            }
+                        }
+                        if (line.length > 35 && line.substring(13, 14) === 'D') {
+                            const articleCode = line.substring(14, 35).trim();
+                            const restOfLine = line.substring(35);
+                            const match = restOfLine.match(/^(.*?)\s+(\d+\.\d+)\s+(\d+\.\d+)/);
+                            
+                            if (match) {
+                                newItems.push({
+                                    id: Date.now() + Math.random(),
+                                    name: match[1].trim(), article: articleCode,
+                                    qty: parseFloat(match[2]), diterima: "", price: parseFloat(match[3]), ket: ""
+                                });
+                            }
+                        }
+                    });
+                } else if (currentCustomer === 'tiptop') {
+                    lines.forEach(line => {
+                        if (line.startsWith('ORDLIN')) {
+                            const articleCode = line.substring(9, 15).trim();
+                            const name = line.substring(15, 45).trim();
+                            const qty = parseFloat(line.substring(50, 58).trim());
+                            const price = parseFloat(line.substring(62, 70).trim());
+                            
+                            if (!isNaN(qty) && !isNaN(price)) {
+                                newItems.push({
+                                    id: Date.now() + Math.random(),
+                                    name: name, article: articleCode, qty: qty, diterima: "", price: price, ket: ""
+                                });
+                            }
+                        } else if (line.startsWith('ORDMSG')) {
+                            const custName = line.substring(59, 90).trim();
+                            const custCity = line.substring(111, 140).trim();
+                            if(custName) document.getElementById('input-customer').value = custName;
+                            if(custCity) document.getElementById('input-city').value = custCity;
+                        }
+                    });
+                }
+
+                if (newItems.length > 0) {
+                    items[currentCustomer] = newItems; 
+                    renderDynamicInputRows();
+                    updateInvoice();
+                    alert(`Berhasil! ${newItems.length} barang otomatis diinput beserta lokasi cabang.`);
+                } else {
+                    alert("Gagal membaca file. Pastikan format TXT sesuai dengan pilihan (Yogya / Tip Top).");
+                }
+                event.target.value = ''; 
+            };
+            reader.readAsText(file);
+        }
+
+        function switchCustomer(customerKey) {
+            currentCustomer = customerKey;
+            
+            document.getElementById('input-faktur').value = "";
+            document.getElementById('input-faktur').placeholder = "Contoh: " + configs[customerKey].defaultFaktur;
+            
+            document.getElementById('input-customer').value = "";
+            document.getElementById('input-customer').placeholder = "Contoh: " + configs[customerKey].defaultName;
+            
+            document.getElementById('input-city').value = "";
+            document.getElementById('input-city').placeholder = "Contoh: " + configs[customerKey].defaultCity;
+
+            document.getElementById('btn-umum').classList.remove('active');
+            document.getElementById('btn-tiptop').classList.remove('active');
+            document.getElementById('btn-yogya').classList.remove('active');
+            document.getElementById(`btn-${customerKey}`).classList.add('active');
+
+            if (customerKey === 'umum') {
+                document.getElementById('import-upload-group').style.display = 'none';
+            } else if (customerKey === 'tiptop') {
+                document.getElementById('import-upload-group').style.display = 'block';
+                document.getElementById('import-label').innerText = "⚡ Auto-Import PO TIP TOP (.TXT)";
+            } else if (customerKey === 'yogya') {
+                document.getElementById('import-upload-group').style.display = 'block';
+                document.getElementById('import-label').innerText = "⚡ Auto-Import PO YOGYA (.TXT)";
+            }
+
+            renderDynamicInputRows();
+            updateInvoice();
+        }
+
+        function updateInvoice() {
+            const config = configs[currentCustomer];
+            document.getElementById('company-phone').innerText = config.phone;
+            document.getElementById('company-email').innerText = config.email;
+            
+            const tglVal = document.getElementById('input-tanggal').value;
+            if (tglVal) {
+                const [yyyy, mm, dd] = tglVal.split('-');
+                const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+                const monthName = months[parseInt(mm, 10) - 1];
+                const shortYear = yyyy.slice(-2);
+                document.getElementById('lbl-tanggal').innerText = `${dd}-${monthName}-${shortYear}`;
+            } else {
+                document.getElementById('lbl-tanggal').innerText = "..................";
+            }
+            
+            if (currentCustomer === 'umum' || currentCustomer === 'tiptop') {
+                const custVal = document.getElementById('input-customer').value;
+                const cityVal = document.getElementById('input-city').value;
+                document.getElementById('lbl-customer').innerText = custVal ? custVal : "..................";
+                document.getElementById('lbl-city').innerText = cityVal ? cityVal : "..................";
+            } else {
+                const custVal = document.getElementById('input-customer').value || config.defaultName;
+                const cityVal = document.getElementById('input-city').value || config.defaultCity;
+                document.getElementById('lbl-customer').innerText = custVal;
+                document.getElementById('lbl-city').innerText = cityVal;
+            }
+            
+            const fakturVal = document.getElementById('input-faktur').value;
+            document.getElementById('lbl-faktur').innerText = config.fakturPrefix + (fakturVal ? fakturVal : "...") + config.fakturSuffix;
+            document.getElementById('supplier-code-box').style.display = config.showSupplierCode ? 'block' : 'none';
+            
+            renderTable(config);
+        }
+
+        function renderTable(config) {
+            const table = document.getElementById('items-table');
+            const colgroup = document.getElementById('table-colgroup');
+            const thead = table.querySelector('thead');
+            const tbody = table.querySelector('tbody');
+            
+            colgroup.innerHTML = ""; thead.innerHTML = ""; tbody.innerHTML = "";
+
+            let colHTML = "";
+            let headerRow = "<tr>";
+            
+            config.columns.forEach(col => { 
+                headerRow += `<th>${col}</th>`; 
+                if(col === "No") colHTML += `<col class="col-width-no">`;
+                else if(col === "Nama Barang") colHTML += `<col class="col-width-name">`;
+                else if(col === "Article Code") colHTML += `<col class="col-width-article">`;
+                else if(col === "Qty Order") colHTML += `<col class="col-width-qty">`;
+                else if(col === "Diterima") colHTML += `<col class="col-width-trima">`;
+                else if(col === "Harga Satuan") colHTML += `<col class="col-width-price">`;
+                else if(col === "KETERANGAN") colHTML += `<col class="col-width-ket">`;
+                else if(col === "Jumlah") colHTML += `<col class="col-width-jumlah">`;
+            });
+            
+            colgroup.innerHTML = colHTML;
+            thead.innerHTML = headerRow + "</tr>";
+
+            let currentItems = items[currentCustomer];
+            let totalInvoice = 0;
+
+            currentItems.forEach((item, index) => {
+                let qtyOrder = parseFloat(item.qty) || 0;
+                let price = parseFloat(item.price) || 0;
+                
+                let qtyDiterima = parseFloat(item.diterima);
+                let qtyToCalculate = !isNaN(qtyDiterima) ? qtyDiterima : qtyOrder;
+                
+                let jumlah = qtyToCalculate * price;
+                totalInvoice += jumlah;
+                
+                let rowHtml = "<tr>";
+                config.columns.forEach(col => {
+                    if (col === "No") rowHtml += `<td class="center-col">${index + 1}</td>`;
+                    else if (col === "Nama Barang") rowHtml += `<td>${item.name}</td>`;
+                    else if (col === "Article Code") rowHtml += `<td class="center-col">${item.article || '-'}</td>`;
+                    else if (col === "Qty Order") rowHtml += `<td class="num-col">${formatNumber(qtyOrder)}</td>`;
+                    
+                    else if (col === "Diterima") rowHtml += `<td class="num-col">${!isNaN(qtyDiterima) ? formatNumber(qtyDiterima) : '-'}</td>`;
+                    
+                    else if (col === "Harga Satuan") rowHtml += `<td class="num-col">${formatNumber(price)}</td>`;
+                    else if (col === "KETERANGAN") rowHtml += `<td>${item.ket || '-'}</td>`;
+                    else if (col === "Jumlah") rowHtml += `<td class="num-col">${formatNumber(jumlah)}</td>`;
+                });
+                tbody.innerHTML += rowHtml + "</tr>";
+            });
+
+            for (let i = currentItems.length; i < 11; i++) {
+                let blankRow = "<tr>";
+                config.columns.forEach(col => {
+                    if (col === 'No') blankRow += `<td class="center-col">${i + 1}</td>`;
+                    else blankRow += `<td>&nbsp;</td>`;
+                });
+                tbody.innerHTML += blankRow + "</tr>";
+            }
+
+            let totalRow = `<tr class="total-row"><td colspan="${config.columns.length - 1}" class="total-label">JUMLAH</td>`;
+            totalRow += `<td class="num-col">${formatNumber(totalInvoice)}</td></tr>`;
+            tbody.innerHTML += totalRow;
+        }
+
+        function renderDynamicInputRows() {
+            const container = document.getElementById('items-list');
+            const headersContainer = document.getElementById('dynamic-headers');
+            container.innerHTML = '';
+            
+            // LOGIKA CSS GRID DI INJECT VIA JS SESUAI TIPE PELANGGAN
+            let gridLayout = "";
+
+            if (currentCustomer === 'yogya' || currentCustomer === 'tiptop') {
+                gridLayout = "3fr 2fr 1.2fr 1.2fr 2fr 40px"; // Proporsi lebar kolom
+                headersContainer.innerHTML = `
+                    <span style="text-align: left;">Barang</span>
+                    <span>Article</span>
+                    <span>Qty</span>
+                    <span>Trima</span>
+                    <span>Harga</span>
+                    <span></span>
+                `;
+            } else {
+                gridLayout = "3fr 1.2fr 1.2fr 2fr 2.5fr 40px"; // Proporsi lebar kolom
+                headersContainer.innerHTML = `
+                    <span style="text-align: left;">Barang</span>
+                    <span>Qty</span>
+                    <span>Trima</span>
+                    <span>Harga</span>
+                    <span>Ket</span>
+                    <span></span>
+                `;
+            }
+
+            headersContainer.style.gridTemplateColumns = gridLayout;
+
+            items[currentCustomer].forEach((item) => {
+                const row = document.createElement('div');
+                row.className = 'item-row';
+                row.style.gridTemplateColumns = gridLayout; // Terapkan Grid yang sama ke input baris
+                
+                let innerHTML = `<input type="text" placeholder="Nama Barang" value="${item.name}" oninput="updateItemData(${item.id}, 'name', this.value)">`;
+
+                if (currentCustomer === 'yogya' || currentCustomer === 'tiptop') {
+                    innerHTML += `<input type="text" placeholder="Code" value="${item.article}" oninput="updateItemData(${item.id}, 'article', this.value)">`;
+                }
+
+                innerHTML += `
+                    <input type="number" step="0.01" placeholder="Qty" value="${item.qty}" oninput="updateItemData(${item.id}, 'qty', this.value)">
+                    <input type="number" step="0.01" placeholder="Trima" value="${item.diterima}" oninput="updateItemData(${item.id}, 'diterima', this.value)">
+                    <input type="number" step="100" placeholder="Harga" value="${item.price}" oninput="updateItemData(${item.id}, 'price', this.value)">
+                `;
+
+                if (currentCustomer === 'umum') {
+                    innerHTML += `<input type="text" placeholder="Ket" value="${item.ket}" oninput="updateItemData(${item.id}, 'ket', this.value)">`;
+                }
+
+                innerHTML += `<button class="btn-remove-item" onclick="removeItemRow(${item.id})" tabindex="-1">✖</button>`;
+
+                row.innerHTML = innerHTML;
+                container.appendChild(row);
+            });
+        }
+
+        function addNewItemRow() {
+            items[currentCustomer].push({
+                id: Date.now(),
+                name: "", article: "", qty: "", diterima: "", price: "", ket: ""
+            });
+            renderDynamicInputRows();
+            updateInvoice();
+            
+            const container = document.getElementById('dynamic-items-container');
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function updateItemData(id, field, value) {
+            const itemIndex = items[currentCustomer].findIndex(item => item.id === id);
+            if (itemIndex > -1) {
+                if (field === 'name') items[currentCustomer][itemIndex].name = value.toUpperCase();
+                else items[currentCustomer][itemIndex][field] = value;
+                updateInvoice();
+            }
+        }
+
+        function removeItemRow(id) {
+            items[currentCustomer] = items[currentCustomer].filter(item => item.id !== id);
+            renderDynamicInputRows();
+            updateInvoice();
+        }
+
+        window.onload = () => {
+            const today = new Date();
+            const yyyy = today.getFullYear();
+            const mm = String(today.getMonth() + 1).padStart(2, '0');
+            const dd = String(today.getDate()).padStart(2, '0');
+            document.getElementById('input-tanggal').value = `${yyyy}-${mm}-${dd}`;
+            
+            switchCustomer('umum');
+        };
+    </script>
+</body>
+</html>
