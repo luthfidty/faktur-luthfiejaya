@@ -67,7 +67,7 @@
         input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
         input[type=number] { -moz-appearance: textfield; }
 
-        .customer-toggle { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+        .customer-toggle { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 20px; }
         .btn-toggle { 
             padding: 10px 5px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.2); 
             color: #a7f3d0; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 12px; 
@@ -97,7 +97,9 @@
         
         .company-subtitle { font-size: 13px; font-weight: bold; margin-bottom: 6px; }
         .company-address { font-size: 11px; line-height: 1.4; color: #333; }
-        .invoice-meta { width: 40%; text-align: right; display: flex; flex-direction: column; align-items: flex-end; }
+        
+        .invoice-meta { width: 40%; text-align: right; display: flex; flex-direction: column; align-items: flex-end; padding-right: 100px; }
+        
         .invoice-date { font-size: 12px; margin-bottom: 5px; }
         .recipient-label { font-size: 11px; color: #444; }
         .recipient-name { font-size: 16px; font-weight: bold; text-transform: uppercase; }
@@ -116,21 +118,19 @@
         .total-row td { font-weight: bold; }
         .total-label { text-align: center; }
         
-        .col-width-no { width: 5%; }
-        .col-width-name { width: 35%; }
-        .col-width-article { width: 15%; }
-        .col-width-qty { width: 8%; }
-        .col-width-trima { width: 8%; }
-        .col-width-price { width: 12%; }
-        .col-width-ket { width: 15%; }
-        .col-width-jumlah { width: 14%; }
+        /* Lebar Kolom Dipertahankan */
+        .col-width-no { width: 4%; }
+        .col-width-name { width: 33%; }
+        .col-width-article { width: 18%; }
+        .col-width-qty { width: 6%; }
+        .col-width-trima { width: 6%; }
+        .col-width-price { width: 11%; }
+        .col-width-ket { width: 10%; }
+        .col-width-jumlah { width: 12%; }
         
-        /* --- DYNAMIC ITEM INPUT STYLES (MENGGUNAKAN GRID AGAR RAPI) --- */
         .order-details-container { 
             background: rgba(255, 255, 255, 0.05); border: 1px dashed rgba(255, 255, 255, 0.3); 
-            border-radius: 12px; padding: 20px; 
-            margin-bottom: 15px; width: 100%; 
-            max-height: 60vh; 
+            border-radius: 12px; padding: 20px; margin-bottom: 15px; width: 100%; max-height: 60vh; 
             overflow-y: auto; overflow-x: auto; 
         }
         
@@ -141,51 +141,51 @@
 
         .items-list-wrapper { min-width: 480px; } 
         
-        /* HEADER GRID */
-        .item-headers { 
-            display: grid; gap: 8px; margin-bottom: 8px; padding: 0 10px; align-items: center; 
-        }
+        .item-headers { display: grid; gap: 8px; margin-bottom: 8px; padding: 0 10px; align-items: center; }
         .item-headers span { font-size: 12px; color: #a7f3d0; font-weight: 600; text-align: center; }
         .item-headers span:first-child { text-align: left; }
 
-        /* ROW GRID */
-        .item-row { 
-            display: grid; gap: 8px; align-items: center; margin-bottom: 12px; 
-            background: rgba(0, 0, 0, 0.15); padding: 10px; border-radius: 8px; 
-            border: 1px solid rgba(255, 255, 255, 0.1); width: 100%; 
-        }
+        .item-row { display: grid; gap: 8px; align-items: center; margin-bottom: 12px; background: rgba(0, 0, 0, 0.15); padding: 10px; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.1); width: 100%; }
+        .item-row input { margin-bottom: 0; padding: 8px 6px; font-size: 13px; width: 100%; }
         
-        .item-row input { 
-            margin-bottom: 0; 
-            padding: 8px 6px; /* Padding kiri kanan dikurangi agar teks Trima dll muat */
-            font-size: 13px; 
-            width: 100%;
-        }
-        
-        .btn-remove-item { 
-            background: rgba(239, 68, 68, 0.2); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.4); 
-            border-radius: 6px; width: 100%; height: 38px; 
-            display: flex; align-items: center; justify-content: center; 
-            cursor: pointer; font-weight: bold; font-size: 16px; transition: all 0.2s; 
-        }
+        .btn-remove-item { background: rgba(239, 68, 68, 0.2); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.4); border-radius: 6px; width: 100%; height: 38px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-weight: bold; font-size: 16px; transition: all 0.2s; }
         .btn-remove-item:hover { background: rgba(239, 68, 68, 0.8); color: white; }
         
         .btn-add-item-row { background: rgba(16, 185, 129, 0.2); color: #6ee7b7; border: 1px dashed rgba(16, 185, 129, 0.4); border-radius: 8px; padding: 12px; width: 100%; cursor: pointer; font-weight: 600; font-size: 14px; transition: all 0.2s; text-align: center; margin-top: 5px; }
         .btn-add-item-row:hover { background: rgba(16, 185, 129, 0.5); color: white; }
 
-        #import-upload-group {
-            background: rgba(16, 185, 129, 0.15); padding: 15px; border-radius: 8px; 
-            margin-bottom: 16px; border: 1px dashed #34d399; display: none; transition: all 0.3s;
-        }
+        #import-upload-group { background: rgba(16, 185, 129, 0.15); padding: 15px; border-radius: 8px; margin-bottom: 16px; border: 1px dashed #34d399; display: none; transition: all 0.3s; }
 
+        /* --- PRINT STYLES --- */
         @media print {
+            @page {
+                size: 22cm 28cm; 
+                margin: 8mm 10mm;
+            }
+
             body { background: none !important; padding: 0 !important; color: #000 !important; display: block !important;}
             .control-panel { display: none !important; }
             .container { display: block !important; width: 100% !important; max-width: 100% !important; gap: 0 !important;}
             .invoice-preview-wrapper { overflow: visible !important; box-shadow: none !important; border-radius: 0 !important; }
             .invoice-box { padding: 0 !important; min-width: 0 !important; width: 100% !important;}
             .web-title { display: none !important;} 
-            .company-header-container { align-items: flex-end; }
+            
+            .invoice-header { margin-bottom: 8px !important; }
+            .company-title { font-size: 20px !important; }
+            .company-subtitle { font-size: 11px !important; margin-bottom: 2px !important; }
+            .company-address { font-size: 10px !important; line-height: 1.2 !important; }
+            .faktur-no { margin-top: 5px !important; margin-bottom: 5px !important; font-size: 12px !important; padding-bottom: 2px !important;}
+            
+            .invoice-table { margin-top: 2px !important; font-size: 10px !important; }
+            .invoice-table th { padding: 3px 2px !important; }
+            .invoice-table td { 
+                padding: 2px 2px !important; 
+                line-height: 1.1 !important; 
+                word-break: break-all !important; 
+            }
+            
+            /* Memastikan baris tidak terpotong setengah ketika pindah halaman otomatis */
+            .invoice-table tr { page-break-inside: avoid; }
         }
     </style>
 </head>
@@ -205,12 +205,13 @@
                 <div id="btn-umum" class="btn-toggle active" onclick="switchCustomer('umum')">UMUM</div>
                 <div id="btn-tiptop" class="btn-toggle" onclick="switchCustomer('tiptop')">TIP TOP</div>
                 <div id="btn-yogya" class="btn-toggle" onclick="switchCustomer('yogya')">YOGYA</div>
+                <div id="btn-hypermart" class="btn-toggle" onclick="switchCustomer('hypermart')">HYPERMART</div>
             </div>
 
             <div id="import-upload-group">
-                <label id="import-label" for="input-txt" style="color: #6ee7b7; font-weight: 600; font-size: 14px;">⚡ Auto-Import PO (.TXT)</label>
-                <input type="file" id="input-txt" accept=".txt" onchange="handleUploadTxt(event)" style="background: rgba(255,255,255,0.1); padding: 8px; border: none; font-size: 12px; margin-bottom: 5px; cursor: pointer;">
-                <p style="font-size: 10px; color: #a7f3d0; margin: 0; line-height: 1.4;">*Pilih file TXT PO untuk otomatis mengekstrak Data Barang & Lokasi Toko.</p>
+                <label id="import-label" for="input-txt" style="color: #6ee7b7; font-weight: 600; font-size: 14px;">⚡ Auto-Import PO</label>
+                <input type="file" id="input-txt" accept=".txt, .xml" onchange="handleUploadFile(event)" style="background: rgba(255,255,255,0.1); padding: 8px; border: none; font-size: 12px; margin-bottom: 5px; cursor: pointer;">
+                <p style="font-size: 10px; color: #a7f3d0; margin: 0; line-height: 1.4;">*Pilih file TXT/XML PO untuk otomatis mengekstrak Data Barang & Lokasi Toko.</p>
             </div>
 
             <div id="custom-customer-group" style="background: rgba(0,0,0,0.15); padding: 15px; border-radius: 8px; margin-bottom: 16px; border: 1px dashed rgba(255,255,255,0.2);">
@@ -280,11 +281,8 @@
 
                 <div class="faktur-no" id="lbl-faktur">FAKTUR NO. ...</div>
 
-                <table class="invoice-table" id="items-table">
-                    <colgroup id="table-colgroup"></colgroup>
-                    <thead></thead>
-                    <tbody></tbody>
-                </table>
+                <div id="tables-wrapper"></div>
+
             </div>
         </div>
     </div>
@@ -308,6 +306,12 @@
                 fakturPrefix: "FAKTUR NO. - ", fakturSuffix: "", defaultFaktur: "DCK", showSupplierCode: true,
                 defaultName: "YOGYA", defaultCity: "DC KAYUMANIS",
                 columns: ["No", "Nama Barang", "Article Code", "Qty Order", "Diterima", "Harga Satuan", "Jumlah"]
+            },
+            hypermart: {
+                phone: "Telp. 0851-2156-0384, 0821-1675-6260, 0878-2245-3086", email: "e-mail : luthfiejaya@gmail.com",
+                fakturPrefix: "FAKTUR NO. ", fakturSuffix: "", defaultFaktur: "PO ", showSupplierCode: false,
+                defaultName: "HYPERMART", defaultCity: "CIANJUR",
+                columns: ["No", "Nama Barang", "Article Code", "Qty Order", "Diterima", "Harga Satuan", "Jumlah"]
             }
         };
 
@@ -315,7 +319,8 @@
         let items = {
             umum: [{ id: Date.now(), name: "", article: "", qty: "", diterima: "", price: "", ket: "" }],
             tiptop: [{ id: Date.now() + 1, name: "", article: "", qty: "", diterima: "", price: "", ket: "" }],
-            yogya: [{ id: Date.now() + 2, name: "", article: "", qty: "", diterima: "", price: "", ket: "" }]
+            yogya: [{ id: Date.now() + 2, name: "", article: "", qty: "", diterima: "", price: "", ket: "" }],
+            hypermart: [{ id: Date.now() + 3, name: "", article: "", qty: "", diterima: "", price: "", ket: "" }]
         };
 
         function formatNumber(num, decimals = 2) {
@@ -323,72 +328,111 @@
             return parseFloat(num).toLocaleString('en-US', { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
         }
 
-        function handleUploadTxt(event) {
+        function handleUploadFile(event) {
             const file = event.target.files[0];
             if (!file) return;
 
             const reader = new FileReader();
             reader.onload = function(e) {
                 const content = e.target.result;
-                const lines = content.split('\n'); 
                 let newItems = [];
                 
-                if (currentCustomer === 'yogya') {
-                    lines.forEach(line => {
-                        if (line.length > 25 && line.substring(13, 14) === 'X') {
-                            let locRaw = line.substring(24, 60).trim();
-                            let cleanLoc = locRaw.replace(/^\d+_/, '').trim();
-                            if(cleanLoc) {
-                                document.getElementById('input-city').value = cleanLoc;
-                            }
+                if (currentCustomer === 'hypermart') {
+                    try {
+                        const parser = new DOMParser();
+                        const xmlDoc = parser.parseFromString(content, "text/xml");
+                        
+                        const orderNo = xmlDoc.getElementsByTagName("OrderNumber")[0]?.textContent;
+                        const orderDate = xmlDoc.getElementsByTagName("OrderDate")[0]?.textContent;
+                        const shipTo = xmlDoc.getElementsByTagName("ShipTo")[0]?.textContent;
+                        
+                        if (orderNo) document.getElementById('input-faktur').value = orderNo;
+                        if (orderDate) document.getElementById('input-tanggal').value = orderDate;
+                        
+                        if (shipTo) {
+                            document.getElementById('input-customer').value = "HYPERMART";
+                            const cityParts = shipTo.split('-');
+                            document.getElementById('input-city').value = cityParts.length > 1 ? cityParts[1].trim() : shipTo.trim();
                         }
-                        if (line.length > 35 && line.substring(13, 14) === 'D') {
-                            const articleCode = line.substring(14, 35).trim();
-                            const restOfLine = line.substring(35);
-                            const match = restOfLine.match(/^(.*?)\s+(\d+\.\d+)\s+(\d+\.\d+)/);
+                        
+                        const orderItems = xmlDoc.getElementsByTagName("OrderItem");
+                        for (let i = 0; i < orderItems.length; i++) {
+                            const article = orderItems[i].getElementsByTagName("SKU")[0]?.textContent || "";
+                            const name = orderItems[i].getElementsByTagName("Description")[0]?.textContent || "";
+                            const qty = parseFloat(orderItems[i].getElementsByTagName("OrderQty")[0]?.textContent || "0");
                             
-                            if (match) {
+                            if (name) {
                                 newItems.push({
                                     id: Date.now() + Math.random(),
-                                    name: match[1].trim(), article: articleCode,
-                                    qty: parseFloat(match[2]), diterima: "", price: parseFloat(match[3]), ket: ""
+                                    name: name, article: article, qty: qty, diterima: "", price: "", ket: ""
                                 });
                             }
                         }
-                    });
-                } else if (currentCustomer === 'tiptop') {
-                    lines.forEach(line => {
-                        if (line.startsWith('ORDLIN')) {
-                            const articleCode = line.substring(9, 15).trim();
-                            const name = line.substring(15, 45).trim();
-                            const qty = parseFloat(line.substring(50, 58).trim());
-                            const price = parseFloat(line.substring(62, 70).trim());
-                            
-                            if (!isNaN(qty) && !isNaN(price)) {
-                                newItems.push({
-                                    id: Date.now() + Math.random(),
-                                    name: name, article: articleCode, qty: qty, diterima: "", price: price, ket: ""
-                                });
+                    } catch (error) {
+                        alert("Format XML Hypermart tidak valid / gagal diproses.");
+                        console.error(error);
+                    }
+                } 
+                else {
+                    const lines = content.split('\n'); 
+                    if (currentCustomer === 'yogya') {
+                        lines.forEach(line => {
+                            if (line.length > 25 && line.substring(13, 14) === 'X') {
+                                let locRaw = line.substring(24, 60).trim();
+                                let cleanLoc = locRaw.replace(/^\d+_/, '').trim();
+                                if(cleanLoc) {
+                                    document.getElementById('input-city').value = cleanLoc;
+                                }
                             }
-                        } else if (line.startsWith('ORDMSG')) {
-                            const custName = line.substring(59, 90).trim();
-                            const custCity = line.substring(111, 140).trim();
-                            if(custName) document.getElementById('input-customer').value = custName;
-                            if(custCity) document.getElementById('input-city').value = custCity;
-                        }
-                    });
+                            if (line.length > 35 && line.substring(13, 14) === 'D') {
+                                const articleCode = line.substring(14, 35).trim();
+                                const restOfLine = line.substring(35);
+                                const match = restOfLine.match(/^(.*?)\s+(\d+\.\d+)\s+(\d+\.\d+)/);
+                                
+                                if (match) {
+                                    newItems.push({
+                                        id: Date.now() + Math.random(),
+                                        name: match[1].trim(), article: articleCode,
+                                        qty: parseFloat(match[2]), diterima: "", price: parseFloat(match[3]), ket: ""
+                                    });
+                                }
+                            }
+                        });
+                    } else if (currentCustomer === 'tiptop') {
+                        lines.forEach(line => {
+                            if (line.startsWith('ORDLIN')) {
+                                const articleCode = line.substring(9, 15).trim();
+                                const name = line.substring(15, 45).trim();
+                                const qty = parseFloat(line.substring(50, 58).trim());
+                                const price = parseFloat(line.substring(62, 70).trim());
+                                
+                                if (!isNaN(qty) && !isNaN(price)) {
+                                    newItems.push({
+                                        id: Date.now() + Math.random(),
+                                        name: name, article: articleCode, qty: qty, diterima: "", price: price, ket: ""
+                                    });
+                                }
+                            } else if (line.startsWith('ORDMSG')) {
+                                const custName = line.substring(59, 90).trim();
+                                const custCity = line.substring(111, 140).trim();
+                                if(custName) document.getElementById('input-customer').value = custName;
+                                if(custCity) document.getElementById('input-city').value = custCity;
+                            }
+                        });
+                    }
                 }
 
                 if (newItems.length > 0) {
                     items[currentCustomer] = newItems; 
                     renderDynamicInputRows();
                     updateInvoice();
-                    alert(`Berhasil! ${newItems.length} barang otomatis diinput beserta lokasi cabang.`);
+                    alert(`Berhasil! ${newItems.length} barang otomatis diinput beserta data lokasi dan No PO.`);
                 } else {
-                    alert("Gagal membaca file. Pastikan format TXT sesuai dengan pilihan (Yogya / Tip Top).");
+                    alert("Gagal membaca file. Pastikan format TXT / XML sesuai dengan pilihan Klien.");
                 }
                 event.target.value = ''; 
             };
+            
             reader.readAsText(file);
         }
 
@@ -407,6 +451,8 @@
             document.getElementById('btn-umum').classList.remove('active');
             document.getElementById('btn-tiptop').classList.remove('active');
             document.getElementById('btn-yogya').classList.remove('active');
+            document.getElementById('btn-hypermart').classList.remove('active'); 
+            
             document.getElementById(`btn-${customerKey}`).classList.add('active');
 
             if (customerKey === 'umum') {
@@ -417,6 +463,9 @@
             } else if (customerKey === 'yogya') {
                 document.getElementById('import-upload-group').style.display = 'block';
                 document.getElementById('import-label').innerText = "⚡ Auto-Import PO YOGYA (.TXT)";
+            } else if (customerKey === 'hypermart') {
+                document.getElementById('import-upload-group').style.display = 'block';
+                document.getElementById('import-label').innerText = "⚡ Auto-Import PO HYPERMART (.XML)";
             }
 
             renderDynamicInputRows();
@@ -439,7 +488,7 @@
                 document.getElementById('lbl-tanggal').innerText = "..................";
             }
             
-            if (currentCustomer === 'umum' || currentCustomer === 'tiptop') {
+            if (currentCustomer === 'umum' || currentCustomer === 'tiptop' || currentCustomer === 'hypermart') {
                 const custVal = document.getElementById('input-customer').value;
                 const cityVal = document.getElementById('input-city').value;
                 document.getElementById('lbl-customer').innerText = custVal ? custVal : "..................";
@@ -458,13 +507,10 @@
             renderTable(config);
         }
 
+        // PERBAIKAN: Page Break Dihapus, Tabel Kembali Jadi 1 Baris Penuh Secara Natural
         function renderTable(config) {
-            const table = document.getElementById('items-table');
-            const colgroup = document.getElementById('table-colgroup');
-            const thead = table.querySelector('thead');
-            const tbody = table.querySelector('tbody');
-            
-            colgroup.innerHTML = ""; thead.innerHTML = ""; tbody.innerHTML = "";
+            const wrapper = document.getElementById('tables-wrapper');
+            wrapper.innerHTML = ""; 
 
             let colHTML = "";
             let headerRow = "<tr>";
@@ -480,17 +526,19 @@
                 else if(col === "KETERANGAN") colHTML += `<col class="col-width-ket">`;
                 else if(col === "Jumlah") colHTML += `<col class="col-width-jumlah">`;
             });
-            
-            colgroup.innerHTML = colHTML;
-            thead.innerHTML = headerRow + "</tr>";
+            headerRow += "</tr>";
 
             let currentItems = items[currentCustomer];
             let totalInvoice = 0;
 
+            let tableHTML = `<table class="invoice-table">`;
+            tableHTML += `<colgroup>${colHTML}</colgroup>`;
+            tableHTML += `<thead>${headerRow}</thead>`;
+            tableHTML += `<tbody>`;
+
             currentItems.forEach((item, index) => {
                 let qtyOrder = parseFloat(item.qty) || 0;
                 let price = parseFloat(item.price) || 0;
-                
                 let qtyDiterima = parseFloat(item.diterima);
                 let qtyToCalculate = !isNaN(qtyDiterima) ? qtyDiterima : qtyOrder;
                 
@@ -503,28 +551,31 @@
                     else if (col === "Nama Barang") rowHtml += `<td>${item.name}</td>`;
                     else if (col === "Article Code") rowHtml += `<td class="center-col">${item.article || '-'}</td>`;
                     else if (col === "Qty Order") rowHtml += `<td class="num-col">${formatNumber(qtyOrder)}</td>`;
-                    
                     else if (col === "Diterima") rowHtml += `<td class="num-col">${!isNaN(qtyDiterima) ? formatNumber(qtyDiterima) : '-'}</td>`;
-                    
                     else if (col === "Harga Satuan") rowHtml += `<td class="num-col">${formatNumber(price)}</td>`;
                     else if (col === "KETERANGAN") rowHtml += `<td>${item.ket || '-'}</td>`;
                     else if (col === "Jumlah") rowHtml += `<td class="num-col">${formatNumber(jumlah)}</td>`;
                 });
-                tbody.innerHTML += rowHtml + "</tr>";
+                tableHTML += rowHtml + "</tr>";
             });
 
+            // Isi baris kosong jika item kurang dari 11 agar tabel tidak terlalu pendek
             for (let i = currentItems.length; i < 11; i++) {
                 let blankRow = "<tr>";
                 config.columns.forEach(col => {
                     if (col === 'No') blankRow += `<td class="center-col">${i + 1}</td>`;
                     else blankRow += `<td>&nbsp;</td>`;
                 });
-                tbody.innerHTML += blankRow + "</tr>";
+                tableHTML += blankRow + "</tr>";
             }
 
+            // Tambahkan baris total
             let totalRow = `<tr class="total-row"><td colspan="${config.columns.length - 1}" class="total-label">JUMLAH</td>`;
             totalRow += `<td class="num-col">${formatNumber(totalInvoice)}</td></tr>`;
-            tbody.innerHTML += totalRow;
+            tableHTML += totalRow;
+
+            tableHTML += `</tbody></table>`;
+            wrapper.innerHTML = tableHTML;
         }
 
         function renderDynamicInputRows() {
@@ -532,11 +583,10 @@
             const headersContainer = document.getElementById('dynamic-headers');
             container.innerHTML = '';
             
-            // LOGIKA CSS GRID DI INJECT VIA JS SESUAI TIPE PELANGGAN
             let gridLayout = "";
 
-            if (currentCustomer === 'yogya' || currentCustomer === 'tiptop') {
-                gridLayout = "3fr 2fr 1.2fr 1.2fr 2fr 40px"; // Proporsi lebar kolom
+            if (currentCustomer === 'yogya' || currentCustomer === 'tiptop' || currentCustomer === 'hypermart') {
+                gridLayout = "3fr 2fr 1.2fr 1.2fr 2fr 40px"; 
                 headersContainer.innerHTML = `
                     <span style="text-align: left;">Barang</span>
                     <span>Article</span>
@@ -546,7 +596,7 @@
                     <span></span>
                 `;
             } else {
-                gridLayout = "3fr 1.2fr 1.2fr 2fr 2.5fr 40px"; // Proporsi lebar kolom
+                gridLayout = "3fr 1.2fr 1.2fr 2fr 2.5fr 40px"; 
                 headersContainer.innerHTML = `
                     <span style="text-align: left;">Barang</span>
                     <span>Qty</span>
@@ -562,11 +612,11 @@
             items[currentCustomer].forEach((item) => {
                 const row = document.createElement('div');
                 row.className = 'item-row';
-                row.style.gridTemplateColumns = gridLayout; // Terapkan Grid yang sama ke input baris
+                row.style.gridTemplateColumns = gridLayout; 
                 
                 let innerHTML = `<input type="text" placeholder="Nama Barang" value="${item.name}" oninput="updateItemData(${item.id}, 'name', this.value)">`;
 
-                if (currentCustomer === 'yogya' || currentCustomer === 'tiptop') {
+                if (currentCustomer === 'yogya' || currentCustomer === 'tiptop' || currentCustomer === 'hypermart') {
                     innerHTML += `<input type="text" placeholder="Code" value="${item.article}" oninput="updateItemData(${item.id}, 'article', this.value)">`;
                 }
 
