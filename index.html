@@ -88,6 +88,7 @@
         .invoice-preview-wrapper { width: 100%; overflow-x: auto; border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.5); background: #ffffff; }
         .invoice-box { background: #ffffff; color: #000000; padding: 40px; width: 100%; min-width: 850px; }
         .invoice-box * { font-family: 'Arial', sans-serif !important; }
+        
         .invoice-header { display: flex; justify-content: space-between; margin-bottom: 20px; }
         .company-details { width: 55%; }
         
@@ -160,7 +161,7 @@
         @media print {
             @page {
                 size: 22cm 28cm; 
-                margin: 8mm 10mm;
+                margin: 10mm;
             }
 
             body { background: none !important; padding: 0 !important; color: #000 !important; display: block !important;}
@@ -170,22 +171,27 @@
             .invoice-box { padding: 0 !important; min-width: 0 !important; width: 100% !important;}
             .web-title { display: none !important;} 
             
+            /* PENGATURAN MULTI-PAGE & PAGINATION */
+            table.print-wrapper-table { page-break-inside: auto; }
+            tr { page-break-inside: avoid; page-break-after: auto; }
+            thead { display: table-header-group; }
+            tfoot { display: table-footer-group; }
+            
             .invoice-header { margin-bottom: 8px !important; }
             .company-title { font-size: 20px !important; }
             .company-subtitle { font-size: 11px !important; margin-bottom: 2px !important; }
             .company-address { font-size: 10px !important; line-height: 1.2 !important; }
             .faktur-no { margin-top: 5px !important; margin-bottom: 5px !important; font-size: 12px !important; padding-bottom: 2px !important;}
             
-            .invoice-table { margin-top: 2px !important; font-size: 10px !important; }
+            .invoice-table { margin-top: 2px !important; font-size: 10px !important; width: 100% !important; }
             .invoice-table th { padding: 3px 2px !important; }
             .invoice-table td { 
                 padding: 2px 2px !important; 
                 line-height: 1.1 !important; 
-                word-break: break-all !important; 
+                word-break: break-word !important; 
             }
             
-            /* Memastikan baris tidak terpotong setengah ketika pindah halaman otomatis */
-            .invoice-table tr { page-break-inside: avoid; }
+            .invoice-table tr { page-break-inside: avoid !important; }
         }
     </style>
 </head>
@@ -251,38 +257,52 @@
 
         <div class="invoice-preview-wrapper">
             <div class="invoice-box">
-                <div class="invoice-header">
-                    <div class="company-details">
-                        <div class="company-header-container">
-                            <img class="company-logo" src="img/logo.png" alt="Logo Luthfie Jaya" onerror="this.style.display='none'">
-                            <div class="company-title">LUTHFIE JAYA</div>
-                        </div>
-                        <div class="company-subtitle">GENERAL SUPPLIER</div>
-                        <div class="company-address">
-                            Kp. Panyaweuyan Jati, RT.02/RW.03<br>
-                            Ciherang, Kec. Pacet, Kabupaten Cianjur, Jawa Barat 43253<br>
-                            <span id="company-phone">Telp. 0851-2156-0384, 0821-1675-6260, 0878-2245-3086</span><br>
-                            <span id="company-email">e-mail : luthfiejaya@gmail.com</span>
-                        </div>
-                    </div>
-                    
-                    <div class="invoice-meta">
-                        <div class="invoice-date" id="lbl-tanggal">..................</div>
-                        <div class="recipient-label">kepada Yth.</div>
-                        <div class="recipient-name" id="lbl-customer">..................</div>
-                        <div class="recipient-dc" id="lbl-city">..................</div>
-                        
-                        <div class="supplier-code-container" id="supplier-code-box" style="display: none;">
-                            <div class="supplier-code-header">Kode Supplier</div>
-                            <div class="supplier-code-value">L676</div>
-                        </div>
-                    </div>
-                </div>
+                <!-- WRAPPER TABLE KHUSUS UNTUK MEMBUAT HEADER BERULANG SAAT DIPRINT MULTI-PAGE -->
+                <table class="print-wrapper-table" style="width: 100%; border-collapse: collapse; border: none;">
+                    <thead>
+                        <tr>
+                            <td style="border: none; padding: 0; vertical-align: top;">
+                                <div class="invoice-header">
+                                    <div class="company-details">
+                                        <div class="company-header-container">
+                                            <img class="company-logo" src="img/logo.png" alt="Logo Luthfie Jaya" onerror="this.style.display='none'">
+                                            <div class="company-title">LUTHFIE JAYA</div>
+                                        </div>
+                                        <div class="company-subtitle">GENERAL SUPPLIER</div>
+                                        <div class="company-address">
+                                            Kp. Panyaweuyan Jati, RT.02/RW.03<br>
+                                            Ciherang, Kec. Pacet, Kabupaten Cianjur, Jawa Barat 43253<br>
+                                            <span id="company-phone">Telp. 0851-2156-0384, 0821-1675-6260, 0878-2245-3086</span><br>
+                                            <span id="company-email">e-mail : luthfiejaya@gmail.com</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="invoice-meta">
+                                        <div class="invoice-date" id="lbl-tanggal">..................</div>
+                                        <div class="recipient-label">kepada Yth.</div>
+                                        <div class="recipient-name" id="lbl-customer">..................</div>
+                                        <div class="recipient-dc" id="lbl-city">..................</div>
+                                        
+                                        <div class="supplier-code-container" id="supplier-code-box" style="display: none;">
+                                            <div class="supplier-code-header">Kode Supplier</div>
+                                            <div class="supplier-code-value">L676</div>
+                                        </div>
+                                    </div>
+                                </div>
 
-                <div class="faktur-no" id="lbl-faktur">FAKTUR NO. ...</div>
-
-                <div id="tables-wrapper"></div>
-
+                                <div class="faktur-no" id="lbl-faktur">FAKTUR NO. ...</div>
+                            </td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="border: none; padding: 0;">
+                                <!-- Area ini untuk merender struktur tabel barang otomatis oleh Javascript -->
+                                <div id="tables-wrapper"></div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
@@ -507,7 +527,6 @@
             renderTable(config);
         }
 
-        // PERBAIKAN: Page Break Dihapus, Tabel Kembali Jadi 1 Baris Penuh Secara Natural
         function renderTable(config) {
             const wrapper = document.getElementById('tables-wrapper');
             wrapper.innerHTML = ""; 
