@@ -336,11 +336,21 @@
         };
 
         let currentCustomer = "umum";
+        
+        // 1. Kembalikan data barang menjadi PER TAB (terpisah masing-masing)
         let items = {
             umum: [{ id: Date.now(), name: "", article: "", qty: "", diterima: "", price: "", ket: "" }],
             tiptop: [{ id: Date.now() + 1, name: "", article: "", qty: "", diterima: "", price: "", ket: "" }],
             yogya: [{ id: Date.now() + 2, name: "", article: "", qty: "", diterima: "", price: "", ket: "" }],
             hypermart: [{ id: Date.now() + 3, name: "", article: "", qty: "", diterima: "", price: "", ket: "" }]
+        };
+
+        // 2. Buat penyimpan sementara untuk text input per tab
+        let tabDataInputs = {
+            umum: { customer: "", city: "", faktur: "" },
+            tiptop: { customer: "", city: "", faktur: "" },
+            yogya: { customer: "", city: "", faktur: "" },
+            hypermart: { customer: "", city: "", faktur: "" }
         };
 
         function formatNumber(num, decimals = 2) {
@@ -443,7 +453,7 @@
                 }
 
                 if (newItems.length > 0) {
-                    items[currentCustomer] = newItems; 
+                    items[currentCustomer] = newItems; // Simpan di array sesuai tab yang aktif
                     renderDynamicInputRows();
                     updateInvoice();
                     alert(`Berhasil! ${newItems.length} barang otomatis diinput beserta data lokasi dan No PO.`);
@@ -457,24 +467,34 @@
         }
 
         function switchCustomer(customerKey) {
+            // 3. SEBELUM PINDAH: Simpan nilai inputan tab yang sekarang sedang dibuka
+            if (currentCustomer) {
+                tabDataInputs[currentCustomer].faktur = document.getElementById('input-faktur').value;
+                tabDataInputs[currentCustomer].customer = document.getElementById('input-customer').value;
+                tabDataInputs[currentCustomer].city = document.getElementById('input-city').value;
+            }
+
+            // Ganti tab aktif
             currentCustomer = customerKey;
             
-            document.getElementById('input-faktur').value = "";
+            // 4. SETELAH PINDAH: Panggil dan isi inputan dari tab yang baru diklik
+            document.getElementById('input-faktur').value = tabDataInputs[currentCustomer].faktur;
+            document.getElementById('input-customer').value = tabDataInputs[currentCustomer].customer;
+            document.getElementById('input-city').value = tabDataInputs[currentCustomer].city;
+
+            // Update Placeholder
             document.getElementById('input-faktur').placeholder = "Contoh: " + configs[customerKey].defaultFaktur;
-            
-            document.getElementById('input-customer').value = "";
             document.getElementById('input-customer').placeholder = "Contoh: " + configs[customerKey].defaultName;
-            
-            document.getElementById('input-city').value = "";
             document.getElementById('input-city').placeholder = "Contoh: " + configs[customerKey].defaultCity;
 
+            // Reset tombol UI
             document.getElementById('btn-umum').classList.remove('active');
             document.getElementById('btn-tiptop').classList.remove('active');
             document.getElementById('btn-yogya').classList.remove('active');
             document.getElementById('btn-hypermart').classList.remove('active'); 
-            
             document.getElementById(`btn-${customerKey}`).classList.add('active');
 
+            // Setelan Import File
             if (customerKey === 'umum') {
                 document.getElementById('import-upload-group').style.display = 'none';
             } else if (customerKey === 'tiptop') {
@@ -547,7 +567,7 @@
             });
             headerRow += "</tr>";
 
-            let currentItems = items[currentCustomer];
+            let currentItems = items[currentCustomer]; // Gunakan array tab yang aktif
             let totalInvoice = 0;
 
             let tableHTML = `<table class="invoice-table">`;
@@ -578,7 +598,7 @@
                 tableHTML += rowHtml + "</tr>";
             });
 
-            // Isi baris kosong jika item kurang dari 11 agar tabel tidak terlalu pendek
+            // Isi baris kosong jika item kurang dari 11
             for (let i = currentItems.length; i < 11; i++) {
                 let blankRow = "<tr>";
                 config.columns.forEach(col => {
