@@ -6,7 +6,6 @@
     <title>Sistem Faktur Luthfie Jaya</title>
     <link rel="icon" type="image/png" href="img/logo.png">
     <style>
-        /* --- RESET & GOOGLE FONTS --- */
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
         
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; }
@@ -30,17 +29,16 @@
             gap: 20px; 
             align-items: start;
         }
-
+ 
         @media (min-width: 1024px) { 
             .container { grid-template-columns: 520px 1fr; gap: 30px; } 
             body { padding: 30px; }
         }
-
+ 
         @media (min-width: 1400px) {
             .container { grid-template-columns: 600px 1fr; }
         }
-
-        /* --- GLASSMORPHISM STYLES --- */
+ 
         .glass-panel { 
             background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(12px); 
             -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.15); 
@@ -50,7 +48,7 @@
         
         h2, h3 { color: #ffffff; margin-bottom: 20px; font-weight: 600; letter-spacing: 0.5px; }
         h2 { border-bottom: 2px solid rgba(255, 255, 255, 0.2); padding-bottom: 10px; }
-
+ 
         .form-group { margin-bottom: 16px; }
         label { display: block; font-size: 13px; color: #d1fae5; margin-bottom: 6px; font-weight: 500; }
         
@@ -62,11 +60,11 @@
         input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(1); cursor: pointer; }
         input:focus { outline: none; background: rgba(255, 255, 255, 0.2); border-color: #34d399; box-shadow: 0 0 10px rgba(52, 211, 153, 0.4); }
         input::placeholder { color: rgba(255, 255, 255, 0.4); }
-
+ 
         input[type=number]::-webkit-inner-spin-button, 
         input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
         input[type=number] { -moz-appearance: textfield; }
-
+ 
         .customer-toggle { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 20px; }
         .btn-toggle { 
             padding: 10px 5px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.2); 
@@ -84,12 +82,10 @@
         .btn-print { background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3); }
         .btn-print:hover { box-shadow: 0 6px 20px rgba(59, 130, 246, 0.5); }
         
-        /* TOMBOL BARU LX310 */
         .btn-lx310 { background: linear-gradient(135deg, #4b5563 0%, #374151 100%); box-shadow: 0 4px 15px rgba(75, 85, 99, 0.3); }
         .btn-lx310:hover { box-shadow: 0 6px 20px rgba(75, 85, 99, 0.5); }
         .action-buttons { display: flex; gap: 10px; margin-top: 10px; width: 100%; }
-
-        /* --- PREVIEW FAKTUR LIVE --- */
+ 
         .invoice-preview-wrapper { width: 100%; overflow-x: auto; border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.5); background: #ffffff; }
         .invoice-box { background: #ffffff; color: #000000; padding: 40px; width: 100%; min-width: 850px; }
         .invoice-box * { font-family: 'Arial', sans-serif !important; }
@@ -115,7 +111,7 @@
         .supplier-code-container { margin-top: 10px; border: 2px solid #000; width: 200px; text-align: center; }
         .supplier-code-header { border-bottom: 1px solid #000; font-size: 11px; font-weight: bold; padding: 3px 0; }
         .supplier-code-value { font-size: 24px; font-weight: bold; padding: 5px 0; }
-
+ 
         .invoice-table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 11px; table-layout: fixed; }
         .invoice-table th, .invoice-table td { border: 1px solid #000; padding: 6px 4px; word-wrap: break-word; overflow-wrap: break-word; }
         .invoice-table th { font-weight: bold; text-align: center; }
@@ -124,7 +120,6 @@
         .total-row td { font-weight: bold; }
         .total-label { text-align: center; }
         
-        /* Lebar Kolom Dipertahankan */
         .col-width-no { width: 4%; }
         .col-width-name { width: 33%; }
         .col-width-article { width: 18%; }
@@ -144,13 +139,13 @@
         .order-details-container::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); border-radius: 4px; }
         .order-details-container::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.3); border-radius: 4px; }
         .order-details-container::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.5); }
-
+ 
         .items-list-wrapper { min-width: 480px; } 
         
         .item-headers { display: grid; gap: 8px; margin-bottom: 8px; padding: 0 10px; align-items: center; }
         .item-headers span { font-size: 12px; color: #a7f3d0; font-weight: 600; text-align: center; }
         .item-headers span:first-child { text-align: left; }
-
+ 
         .item-row { display: grid; gap: 8px; align-items: center; margin-bottom: 12px; background: rgba(0, 0, 0, 0.15); padding: 10px; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.1); width: 100%; }
         .item-row input { margin-bottom: 0; padding: 8px 6px; font-size: 13px; width: 100%; }
         
@@ -159,16 +154,18 @@
         
         .btn-add-item-row { background: rgba(16, 185, 129, 0.2); color: #6ee7b7; border: 1px dashed rgba(16, 185, 129, 0.4); border-radius: 8px; padding: 12px; width: 100%; cursor: pointer; font-weight: 600; font-size: 14px; transition: all 0.2s; text-align: center; margin-top: 5px; }
         .btn-add-item-row:hover { background: rgba(16, 185, 129, 0.5); color: white; }
-
+ 
         #import-upload-group { background: rgba(16, 185, 129, 0.15); padding: 15px; border-radius: 8px; margin-bottom: 16px; border: 1px dashed #34d399; display: none; transition: all 0.3s; }
-
-        /* --- PRINT STYLES --- */
+ 
+        /* ============================================================
+           PRINT STYLES - PRINTER BIASA
+        ============================================================ */
         @media print {
             @page {
                 size: 22cm 28cm; 
                 margin: 10mm;
             }
-
+ 
             body { background: none !important; padding: 0 !important; color: #000 !important; display: block !important;}
             .control-panel { display: none !important; }
             .container { display: block !important; width: 100% !important; max-width: 100% !important; gap: 0 !important;}
@@ -176,7 +173,6 @@
             .invoice-box { padding: 0 !important; min-width: 0 !important; width: 100% !important;}
             .web-title { display: none !important;} 
             
-            /* PENGATURAN MULTI-PAGE & PAGINATION */
             table.print-wrapper-table { page-break-inside: auto; }
             tr { page-break-inside: avoid; page-break-after: auto; }
             thead { display: table-header-group; }
@@ -195,55 +191,154 @@
                 line-height: 1.1 !important; 
                 word-break: break-word !important; 
             }
-            
             .invoice-table tr { page-break-inside: avoid !important; }
-
-            /* --- OVERRIDE KHUSUS EPSON LX-310 (DOT MATRIX) --- */
-            body.print-lx310-mode @page { margin: 0; } 
+        }
+ 
+        /* ============================================================
+           PRINT STYLES - EPSON LX-310 (KERTAS 24x28cm DOT MATRIX)
+           Menggunakan class .print-lx310-mode pada body
+        ============================================================ */
+        @media print {
+            /* @page override khusus LX-310 menggunakan class pada html element */
+            html.lx310-print-active {
+                /* Tidak bisa override @page di sini dengan class biasa,
+                   jadi kita atur via JS sebelum print */
+            }
+ 
+            body.print-lx310-mode {
+                margin: 0 !important;
+                padding: 0 !important;
+                background: none !important;
+                display: block !important;
+            }
+ 
+            body.print-lx310-mode .control-panel { display: none !important; }
+            body.print-lx310-mode .web-title { display: none !important; }
+            body.print-lx310-mode .container { display: block !important; width: 100% !important; max-width: 100% !important; gap: 0 !important; }
             
+            body.print-lx310-mode .invoice-preview-wrapper { 
+                overflow: visible !important; 
+                box-shadow: none !important; 
+                border-radius: 0 !important;
+                width: 100% !important;
+            }
+            
+            body.print-lx310-mode .invoice-box { 
+                padding: 4mm 5mm !important; 
+                min-width: 0 !important; 
+                width: 100% !important;
+                /* Isi seluruh halaman dari atas ke bawah */
+                min-height: 0 !important;
+            }
+ 
+            /* Semua teks pakai Courier (font dot matrix) */
+            body.print-lx310-mode .invoice-box,
             body.print-lx310-mode .invoice-box * {
-                font-family: 'Courier New', Courier, monospace !important; 
-                color: black !important;
+                font-family: 'Courier New', Courier, monospace !important;
+                color: #000 !important;
             }
-            
-            body.print-lx310-mode .company-logo {
-                display: none !important; 
-            }
+ 
+            /* Header perusahaan */
+            body.print-lx310-mode .company-logo { display: none !important; }
             
             body.print-lx310-mode .company-title {
-                font-size: 12pt !important; /* Diperkecil */
-                margin-bottom: 3px !important;
+                font-size: 14pt !important;
+                font-weight: bold !important;
+                line-height: 1.2 !important;
             }
             
-            body.print-lx310-mode .company-subtitle,
-            body.print-lx310-mode .company-address,
-            body.print-lx310-mode .invoice-meta *,
-            body.print-lx310-mode .faktur-no {
-                font-size: 8pt !important; /* Diperkecil */
+            body.print-lx310-mode .company-subtitle {
+                font-size: 9pt !important;
                 line-height: 1.1 !important;
+                margin-bottom: 2px !important;
             }
             
-            body.print-lx310-mode .invoice-table {
+            body.print-lx310-mode .company-address {
+                font-size: 8pt !important;
+                line-height: 1.2 !important;
+            }
+ 
+            body.print-lx310-mode .invoice-header {
+                margin-bottom: 4px !important;
+            }
+ 
+            body.print-lx310-mode .invoice-date,
+            body.print-lx310-mode .recipient-label,
+            body.print-lx310-mode .recipient-name,
+            body.print-lx310-mode .recipient-dc {
+                font-size: 9pt !important;
+                line-height: 1.2 !important;
+            }
+ 
+            body.print-lx310-mode .supplier-code-container {
+                width: 130px !important;
                 margin-top: 5px !important;
             }
-
-            body.print-lx310-mode .invoice-table th, 
-            body.print-lx310-mode .invoice-table td {
-                font-size: 7.5pt !important; /* Diperkecil agar Article Code tidak turun baris */
-                padding: 2px !important; /* Padding dirapatkan */
-                line-height: 1.1 !important;
-                border: 1px solid #000 !important;
+            body.print-lx310-mode .supplier-code-header {
+                font-size: 7pt !important;
+                padding: 1px 0 !important;
             }
+            body.print-lx310-mode .supplier-code-value {
+                font-size: 16pt !important;
+                padding: 2px 0 !important;
+            }
+ 
+            body.print-lx310-mode .faktur-no {
+                font-size: 9pt !important;
+                margin-top: 4px !important;
+                margin-bottom: 4px !important;
+                padding-bottom: 2px !important;
+                border-bottom: 1px solid #000 !important;
+            }
+ 
+            /* TABEL INVOICE - KUNCI UTAMA AGAR PENUH */
+            body.print-lx310-mode .invoice-table {
+                width: 100% !important;
+                margin-top: 3px !important;
+                border-collapse: collapse !important;
+                table-layout: fixed !important;
+                /* Biarkan tabel berkembang sesuai konten */
+            }
+ 
+            body.print-lx310-mode .invoice-table th {
+                font-size: 8pt !important;
+                padding: 3px 2px !important;
+                line-height: 1.2 !important;
+                border: 1px solid #000 !important;
+                text-align: center !important;
+            }
+ 
+            body.print-lx310-mode .invoice-table td {
+                font-size: 8pt !important;
+                padding: 3px 2px !important;
+                line-height: 1.3 !important;
+                border: 1px solid #000 !important;
+                word-break: break-word !important;
+                overflow-wrap: break-word !important;
+            }
+ 
+            /* Baris tidak boleh terpotong di tengah halaman */
+            body.print-lx310-mode .invoice-table tr {
+                page-break-inside: avoid !important;
+            }
+ 
+            body.print-lx310-mode table.print-wrapper-table {
+                width: 100% !important;
+                page-break-inside: auto !important;
+            }
+ 
+            body.print-lx310-mode thead { display: table-header-group !important; }
+            body.print-lx310-mode tfoot { display: table-footer-group !important; }
         }
     </style>
 </head>
 <body>
-
+ 
     <div class="web-title" style="margin-bottom: 20px; text-align: center; width: 100%;">
         <h1 style="font-weight: 700; color: #fff;">LUTHFIE JAYA</h1>
         <p style="color: #a7f3d0; font-size: 14px;">Invoice Generator Platform</p>
     </div>
-
+ 
     <div class="container">
         <div class="glass-panel control-panel">
             <h2>Panel Input</h2>
@@ -255,13 +350,13 @@
                 <div id="btn-yogya" class="btn-toggle" onclick="switchCustomer('yogya')">YOGYA</div>
                 <div id="btn-hypermart" class="btn-toggle" onclick="switchCustomer('hypermart')">HYPERMART</div>
             </div>
-
+ 
             <div id="import-upload-group">
                 <label id="import-label" for="input-txt" style="color: #6ee7b7; font-weight: 600; font-size: 14px;">⚡ Auto-Import PO</label>
                 <input type="file" id="input-txt" accept=".txt, .xml" onchange="handleUploadFile(event)" style="background: rgba(255,255,255,0.1); padding: 8px; border: none; font-size: 12px; margin-bottom: 5px; cursor: pointer;">
                 <p style="font-size: 10px; color: #a7f3d0; margin: 0; line-height: 1.4;">*Pilih file TXT/XML PO untuk otomatis mengekstrak Data Barang & Lokasi Toko.</p>
             </div>
-
+ 
             <div id="custom-customer-group" style="background: rgba(0,0,0,0.15); padding: 15px; border-radius: 8px; margin-bottom: 16px; border: 1px dashed rgba(255,255,255,0.2);">
                 <div class="form-group">
                     <label for="input-customer">Nama Pelanggan / Tujuan</label>
@@ -272,17 +367,17 @@
                     <input type="text" id="input-city" placeholder="Contoh: JAKARTA" oninput="updateInvoice()">
                 </div>
             </div>
-
+ 
             <div class="form-group">
                 <label for="input-faktur">No. Faktur</label>
                 <input type="text" id="input-faktur" placeholder="Contoh: 001" oninput="updateInvoice()">
             </div>
-
+ 
             <div class="form-group">
                 <label for="input-tanggal">Tanggal</label>
                 <input type="date" id="input-tanggal" onchange="updateInvoice()" oninput="updateInvoice()">
             </div>
-
+ 
             <hr style="border: none; border-top: 1px solid rgba(255,255,255,0.2); margin: 20px 0;">
             
             <h3>Order Details</h3>
@@ -293,13 +388,13 @@
                 </div>
                 <button type="button" class="btn-add-item-row" onclick="addNewItemRow()">+ Tambah Baris Barang</button>
             </div>
-
+ 
             <div class="action-buttons">
                 <button class="btn-action btn-print" onclick="cetakBiasa()">Cetak Printer Biasa</button>
                 <button class="btn-action btn-lx310" onclick="cetakLX310()">Cetak Epson LX-310</button>
             </div>
         </div>
-
+ 
         <div class="invoice-preview-wrapper">
             <div class="invoice-box">
                 <table class="print-wrapper-table" style="width: 100%; border-collapse: collapse; border: none;">
@@ -333,7 +428,7 @@
                                         </div>
                                     </div>
                                 </div>
-
+ 
                                 <div class="faktur-no" id="lbl-faktur">FAKTUR NO. ...</div>
                             </td>
                         </tr>
@@ -349,7 +444,7 @@
             </div>
         </div>
     </div>
-
+ 
     <script>
         const configs = {
             umum: {
@@ -377,7 +472,7 @@
                 columns: ["No", "Nama Barang", "Article Code", "Qty Order", "Diterima", "Harga Satuan", "Jumlah"]
             }
         };
-
+ 
         let currentCustomer = "umum";
         
         let items = {
@@ -386,23 +481,23 @@
             yogya: [{ id: Date.now() + 2, name: "", article: "", qty: "", diterima: "", price: "", ket: "" }],
             hypermart: [{ id: Date.now() + 3, name: "", article: "", qty: "", diterima: "", price: "", ket: "" }]
         };
-
+ 
         let tabDataInputs = {
             umum: { customer: "", city: "", faktur: "" },
             tiptop: { customer: "", city: "", faktur: "" },
             yogya: { customer: "", city: "", faktur: "" },
             hypermart: { customer: "", city: "", faktur: "" }
         };
-
+ 
         function formatNumber(num, decimals = 2) {
             if (num === "" || num === undefined || num === null || isNaN(num) || parseFloat(num) === 0) return "-";
             return parseFloat(num).toLocaleString('en-US', { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
         }
-
+ 
         function handleUploadFile(event) {
             const file = event.target.files[0];
             if (!file) return;
-
+ 
             const reader = new FileReader();
             reader.onload = function(e) {
                 const content = e.target.result;
@@ -458,9 +553,7 @@
                             if (line.length > 35 && line.substring(13, 14) === 'D') {
                                 const articleCode = line.substring(14, 35).trim();
                                 const restOfLine = line.substring(35);
-                                
                                 const match = restOfLine.match(/^(.*?)\s+(\d*\.?\d+)\s+(\d*\.?\d+)/);
-                                
                                 if (match) {
                                     newItems.push({
                                         id: Date.now() + Math.random(),
@@ -477,7 +570,6 @@
                                 const name = line.substring(15, 45).trim();
                                 const qty = parseFloat(line.substring(50, 58).trim());
                                 const price = parseFloat(line.substring(62, 70).trim());
-                                
                                 if (!isNaN(qty) && !isNaN(price)) {
                                     newItems.push({
                                         id: Date.now() + Math.random(),
@@ -493,7 +585,7 @@
                         });
                     }
                 }
-
+ 
                 if (newItems.length > 0) {
                     items[currentCustomer] = newItems; 
                     renderDynamicInputRows();
@@ -507,30 +599,30 @@
             
             reader.readAsText(file);
         }
-
+ 
         function switchCustomer(customerKey) {
             if (currentCustomer) {
                 tabDataInputs[currentCustomer].faktur = document.getElementById('input-faktur').value;
                 tabDataInputs[currentCustomer].customer = document.getElementById('input-customer').value;
                 tabDataInputs[currentCustomer].city = document.getElementById('input-city').value;
             }
-
+ 
             currentCustomer = customerKey;
             
             document.getElementById('input-faktur').value = tabDataInputs[currentCustomer].faktur;
             document.getElementById('input-customer').value = tabDataInputs[currentCustomer].customer;
             document.getElementById('input-city').value = tabDataInputs[currentCustomer].city;
-
+ 
             document.getElementById('input-faktur').placeholder = "Contoh: " + configs[customerKey].defaultFaktur;
             document.getElementById('input-customer').placeholder = "Contoh: " + configs[customerKey].defaultName;
             document.getElementById('input-city').placeholder = "Contoh: " + configs[customerKey].defaultCity;
-
+ 
             document.getElementById('btn-umum').classList.remove('active');
             document.getElementById('btn-tiptop').classList.remove('active');
             document.getElementById('btn-yogya').classList.remove('active');
             document.getElementById('btn-hypermart').classList.remove('active'); 
             document.getElementById(`btn-${customerKey}`).classList.add('active');
-
+ 
             if (customerKey === 'umum') {
                 document.getElementById('import-upload-group').style.display = 'none';
             } else if (customerKey === 'tiptop') {
@@ -543,11 +635,11 @@
                 document.getElementById('import-upload-group').style.display = 'block';
                 document.getElementById('import-label').innerText = "⚡ Auto-Import PO HYPERMART (.XML)";
             }
-
+ 
             renderDynamicInputRows();
             updateInvoice();
         }
-
+ 
         function updateInvoice() {
             const config = configs[currentCustomer];
             document.getElementById('company-phone').innerText = config.phone;
@@ -582,11 +674,11 @@
             
             renderTable(config);
         }
-
+ 
         function renderTable(config) {
             const wrapper = document.getElementById('tables-wrapper');
             wrapper.innerHTML = ""; 
-
+ 
             let colHTML = "";
             let headerRow = "<tr>";
             
@@ -602,15 +694,15 @@
                 else if(col === "Jumlah") colHTML += `<col class="col-width-jumlah">`;
             });
             headerRow += "</tr>";
-
+ 
             let currentItems = items[currentCustomer]; 
             let totalInvoice = 0;
-
+ 
             let tableHTML = `<table class="invoice-table">`;
             tableHTML += `<colgroup>${colHTML}</colgroup>`;
             tableHTML += `<thead>${headerRow}</thead>`;
             tableHTML += `<tbody>`;
-
+ 
             currentItems.forEach((item, index) => {
                 let qtyOrder = parseFloat(item.qty) || 0;
                 let price = parseFloat(item.price) || 0;
@@ -633,7 +725,8 @@
                 });
                 tableHTML += rowHtml + "</tr>";
             });
-
+ 
+            // Tambah baris kosong sampai minimal 11 baris
             for (let i = currentItems.length; i < 11; i++) {
                 let blankRow = "<tr>";
                 config.columns.forEach(col => {
@@ -642,22 +735,22 @@
                 });
                 tableHTML += blankRow + "</tr>";
             }
-
+ 
             let totalRow = `<tr class="total-row"><td colspan="${config.columns.length - 1}" class="total-label">JUMLAH</td>`;
             totalRow += `<td class="num-col">${formatNumber(totalInvoice)}</td></tr>`;
             tableHTML += totalRow;
-
+ 
             tableHTML += `</tbody></table>`;
             wrapper.innerHTML = tableHTML;
         }
-
+ 
         function renderDynamicInputRows() {
             const container = document.getElementById('items-list');
             const headersContainer = document.getElementById('dynamic-headers');
             container.innerHTML = '';
             
             let gridLayout = "";
-
+ 
             if (currentCustomer === 'yogya' || currentCustomer === 'tiptop' || currentCustomer === 'hypermart') {
                 gridLayout = "3fr 2fr 1.2fr 1.2fr 2fr 40px"; 
                 headersContainer.innerHTML = `
@@ -679,37 +772,37 @@
                     <span></span>
                 `;
             }
-
+ 
             headersContainer.style.gridTemplateColumns = gridLayout;
-
+ 
             items[currentCustomer].forEach((item) => {
                 const row = document.createElement('div');
                 row.className = 'item-row';
                 row.style.gridTemplateColumns = gridLayout; 
                 
                 let innerHTML = `<input type="text" placeholder="Nama Barang" value="${item.name}" oninput="updateItemData(${item.id}, 'name', this.value)">`;
-
+ 
                 if (currentCustomer === 'yogya' || currentCustomer === 'tiptop' || currentCustomer === 'hypermart') {
                     innerHTML += `<input type="text" placeholder="Code" value="${item.article}" oninput="updateItemData(${item.id}, 'article', this.value)">`;
                 }
-
+ 
                 innerHTML += `
                     <input type="number" step="0.01" placeholder="Qty" value="${item.qty}" oninput="updateItemData(${item.id}, 'qty', this.value)">
                     <input type="number" step="0.01" placeholder="Trima" value="${item.diterima}" oninput="updateItemData(${item.id}, 'diterima', this.value)">
                     <input type="number" step="100" placeholder="Harga" value="${item.price}" oninput="updateItemData(${item.id}, 'price', this.value)">
                 `;
-
+ 
                 if (currentCustomer === 'umum') {
                     innerHTML += `<input type="text" placeholder="Ket" value="${item.ket}" oninput="updateItemData(${item.id}, 'ket', this.value)">`;
                 }
-
+ 
                 innerHTML += `<button class="btn-remove-item" onclick="removeItemRow(${item.id})" tabindex="-1">✖</button>`;
-
+ 
                 row.innerHTML = innerHTML;
                 container.appendChild(row);
             });
         }
-
+ 
         function addNewItemRow() {
             items[currentCustomer].push({
                 id: Date.now(),
@@ -721,7 +814,7 @@
             const container = document.getElementById('dynamic-items-container');
             container.scrollTop = container.scrollHeight;
         }
-
+ 
         function updateItemData(id, field, value) {
             const itemIndex = items[currentCustomer].findIndex(item => item.id === id);
             if (itemIndex > -1) {
@@ -730,29 +823,59 @@
                 updateInvoice();
             }
         }
-
+ 
         function removeItemRow(id) {
             items[currentCustomer] = items[currentCustomer].filter(item => item.id !== id);
             renderDynamicInputRows();
             updateInvoice();
         }
-
-        // --- DUA FUNGSI BARU UNTUK PRINTING ---
+ 
+        // ============================================================
+        // FUNGSI PRINT - KUNCI PERBAIKAN ADA DI SINI
+        // ============================================================
+ 
         function cetakBiasa() {
+            // Pastikan tidak ada mode LX310 aktif
             document.body.classList.remove('print-lx310-mode');
+            // Hapus style @page override jika ada
+            const oldStyle = document.getElementById('lx310-page-style');
+            if (oldStyle) oldStyle.remove();
             window.print();
         }
-
+ 
         function cetakLX310() {
-            document.body.classList.add('print-lx310-mode'); // Tambahkan mode khusus LX-310
+            // 1. Inject @page rule khusus LX310 ke dalam <head>
+            //    Ini satu-satunya cara override @page secara dinamis
+            const oldStyle = document.getElementById('lx310-page-style');
+            if (oldStyle) oldStyle.remove();
+ 
+            const pageStyle = document.createElement('style');
+            pageStyle.id = 'lx310-page-style';
+            pageStyle.innerHTML = `
+                @media print {
+                    @page {
+                        /* Ukuran kertas dot matrix 24x28cm, margin minimal */
+                        size: 24cm 28cm;
+                        margin: 5mm 8mm 5mm 8mm;
+                    }
+                }
+            `;
+            document.head.appendChild(pageStyle);
+ 
+            // 2. Tambahkan class LX310 ke body untuk styling khusus
+            document.body.classList.add('print-lx310-mode');
+            
+            // 3. Print
             window.print();
             
-            // Hapus class setelah dialog print ditutup agar tampilan web kembali normal
+            // 4. Bersihkan setelah print dialog ditutup
             setTimeout(() => {
                 document.body.classList.remove('print-lx310-mode');
-            }, 1000);
+                const s = document.getElementById('lx310-page-style');
+                if (s) s.remove();
+            }, 2000);
         }
-
+ 
         window.onload = () => {
             const today = new Date();
             const yyyy = today.getFullYear();
