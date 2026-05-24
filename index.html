@@ -157,9 +157,8 @@
 
         #import-upload-group { background: rgba(16, 185, 129, 0.15); padding: 15px; border-radius: 8px; margin-bottom: 16px; border: 1px dashed #34d399; display: none; transition: all 0.3s; }
 
-        /* --- PRINT STYLES - RAPI & PROPORSIONAL --- */
+        /* --- PRINT STYLES --- */
         @media print {
-            /* Ukuran kertas continuous form standar (Lebar 22cm, Tinggi 28cm) */
             @page {
                 size: 22cm 28cm; 
                 margin: 10mm;
@@ -172,25 +171,26 @@
             .invoice-box { padding: 0 !important; min-width: 0 !important; width: 100% !important;}
             .web-title { display: none !important;} 
             
-            table.print-wrapper-table { page-break-inside: auto; width: 100%; }
+            /* PENGATURAN MULTI-PAGE & PAGINATION */
+            table.print-wrapper-table { page-break-inside: auto; }
             tr { page-break-inside: avoid; page-break-after: auto; }
             thead { display: table-header-group; }
             tfoot { display: table-footer-group; }
             
-            /* --- UKURAN NAIK SEDIKIT TAPI TETAP RAPI --- */
-            .invoice-header { margin-bottom: 12px !important; }
-            .company-title { font-size: 24px !important; } /* Asalnya 20px */
-            .company-subtitle { font-size: 13px !important; margin-bottom: 3px !important; }
-            .company-address { font-size: 12px !important; line-height: 1.3 !important; }
-            .faktur-no { margin-top: 8px !important; margin-bottom: 8px !important; font-size: 14px !important; padding-bottom: 3px !important;}
+            .invoice-header { margin-bottom: 8px !important; }
+            .company-title { font-size: 20px !important; }
+            .company-subtitle { font-size: 11px !important; margin-bottom: 2px !important; }
+            .company-address { font-size: 10px !important; line-height: 1.2 !important; }
+            .faktur-no { margin-top: 5px !important; margin-bottom: 5px !important; font-size: 12px !important; padding-bottom: 2px !important;}
             
-            .invoice-table { margin-top: 5px !important; font-size: 12px !important; /* Asalnya 10px, dinaikkan ke 12px */ width: 100% !important; }
-            .invoice-table th { padding: 5px 3px !important; }
+            .invoice-table { margin-top: 2px !important; font-size: 10px !important; width: 100% !important; }
+            .invoice-table th { padding: 3px 2px !important; }
             .invoice-table td { 
-                padding: 4px 3px !important; 
-                line-height: 1.2 !important; 
+                padding: 2px 2px !important; 
+                line-height: 1.1 !important; 
                 word-break: break-word !important; 
             }
+            
             .invoice-table tr { page-break-inside: avoid !important; }
         }
     </style>
