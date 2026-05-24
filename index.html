@@ -76,13 +76,18 @@
         .btn-toggle.active { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: #fff; border-color: transparent; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4); }
         
         .btn-action { 
-            width: 100%; padding: 12px; margin-top: 10px; background: linear-gradient(135deg, #10b981 0%, #059669 100%); 
+            width: 100%; padding: 12px; background: linear-gradient(135deg, #10b981 0%, #059669 100%); 
             color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; 
             transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3); 
         }
         .btn-action:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(16, 185, 129, 0.5); }
         .btn-print { background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3); }
         .btn-print:hover { box-shadow: 0 6px 20px rgba(59, 130, 246, 0.5); }
+        
+        /* TOMBOL BARU LX310 */
+        .btn-lx310 { background: linear-gradient(135deg, #4b5563 0%, #374151 100%); box-shadow: 0 4px 15px rgba(75, 85, 99, 0.3); }
+        .btn-lx310:hover { box-shadow: 0 6px 20px rgba(75, 85, 99, 0.5); }
+        .action-buttons { display: flex; gap: 10px; margin-top: 10px; width: 100%; }
 
         /* --- PREVIEW FAKTUR LIVE --- */
         .invoice-preview-wrapper { width: 100%; overflow-x: auto; border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.5); background: #ffffff; }
@@ -192,6 +197,43 @@
             }
             
             .invoice-table tr { page-break-inside: avoid !important; }
+
+            /* --- OVERRIDE KHUSUS EPSON LX-310 (DOT MATRIX) --- */
+            body.print-lx310-mode @page { margin: 0; } 
+            
+            body.print-lx310-mode .invoice-box * {
+                font-family: 'Courier New', Courier, monospace !important; 
+                color: black !important;
+            }
+            
+            body.print-lx310-mode .company-logo {
+                display: none !important; 
+            }
+            
+            body.print-lx310-mode .company-title {
+                font-size: 12pt !important; /* Diperkecil */
+                margin-bottom: 3px !important;
+            }
+            
+            body.print-lx310-mode .company-subtitle,
+            body.print-lx310-mode .company-address,
+            body.print-lx310-mode .invoice-meta *,
+            body.print-lx310-mode .faktur-no {
+                font-size: 8pt !important; /* Diperkecil */
+                line-height: 1.1 !important;
+            }
+            
+            body.print-lx310-mode .invoice-table {
+                margin-top: 5px !important;
+            }
+
+            body.print-lx310-mode .invoice-table th, 
+            body.print-lx310-mode .invoice-table td {
+                font-size: 7.5pt !important; /* Diperkecil agar Article Code tidak turun baris */
+                padding: 2px !important; /* Padding dirapatkan */
+                line-height: 1.1 !important;
+                border: 1px solid #000 !important;
+            }
         }
     </style>
 </head>
@@ -252,7 +294,10 @@
                 <button type="button" class="btn-add-item-row" onclick="addNewItemRow()">+ Tambah Baris Barang</button>
             </div>
 
-            <button class="btn-action btn-print" onclick="window.print()">Cetak / Simpan PDF</button>
+            <div class="action-buttons">
+                <button class="btn-action btn-print" onclick="cetakBiasa()">Cetak Printer Biasa</button>
+                <button class="btn-action btn-lx310" onclick="cetakLX310()">Cetak Epson LX-310</button>
+            </div>
         </div>
 
         <div class="invoice-preview-wrapper">
@@ -403,22 +448,17 @@
                     const lines = content.split('\n'); 
                     if (currentCustomer === 'yogya') {
                         lines.forEach(line => {
-                            // Ekstrak Lokasi / Cabang Yogya
                             if (line.length > 25 && line.substring(13, 14) === 'X') {
                                 let locRaw = line.substring(24, 80).trim(); 
-                                // Memisahkan nama cabang dari teks alamat panjang
                                 let cleanLoc = locRaw.replace(/^\d+_/, '').split(/\s{2,}/)[0].trim();
                                 if(cleanLoc) {
                                     document.getElementById('input-city').value = cleanLoc;
                                 }
                             }
-                            // Ekstrak Barang Yogya
                             if (line.length > 35 && line.substring(13, 14) === 'D') {
-                                // PERBAIKAN FINAL: Kembali gunakan 35 agar nama barang tidak terpotong
                                 const articleCode = line.substring(14, 35).trim();
                                 const restOfLine = line.substring(35);
                                 
-                                // Regex yang sudah bisa membaca angka .500 atau .250
                                 const match = restOfLine.match(/^(.*?)\s+(\d*\.?\d+)\s+(\d*\.?\d+)/);
                                 
                                 if (match) {
@@ -695,6 +735,22 @@
             items[currentCustomer] = items[currentCustomer].filter(item => item.id !== id);
             renderDynamicInputRows();
             updateInvoice();
+        }
+
+        // --- DUA FUNGSI BARU UNTUK PRINTING ---
+        function cetakBiasa() {
+            document.body.classList.remove('print-lx310-mode');
+            window.print();
+        }
+
+        function cetakLX310() {
+            document.body.classList.add('print-lx310-mode'); // Tambahkan mode khusus LX-310
+            window.print();
+            
+            // Hapus class setelah dialog print ditutup agar tampilan web kembali normal
+            setTimeout(() => {
+                document.body.classList.remove('print-lx310-mode');
+            }, 1000);
         }
 
         window.onload = () => {
