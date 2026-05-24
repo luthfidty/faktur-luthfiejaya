@@ -257,7 +257,6 @@
 
         <div class="invoice-preview-wrapper">
             <div class="invoice-box">
-                <!-- WRAPPER TABLE KHUSUS UNTUK MEMBUAT HEADER BERULANG SAAT DIPRINT MULTI-PAGE -->
                 <table class="print-wrapper-table" style="width: 100%; border-collapse: collapse; border: none;">
                     <thead>
                         <tr>
@@ -297,7 +296,6 @@
                     <tbody>
                         <tr>
                             <td style="border: none; padding: 0;">
-                                <!-- Area ini untuk merender struktur tabel barang otomatis oleh Javascript -->
                                 <div id="tables-wrapper"></div>
                             </td>
                         </tr>
@@ -337,7 +335,6 @@
 
         let currentCustomer = "umum";
         
-        // 1. Kembalikan data barang menjadi PER TAB (terpisah masing-masing)
         let items = {
             umum: [{ id: Date.now(), name: "", article: "", qty: "", diterima: "", price: "", ket: "" }],
             tiptop: [{ id: Date.now() + 1, name: "", article: "", qty: "", diterima: "", price: "", ket: "" }],
@@ -345,7 +342,6 @@
             hypermart: [{ id: Date.now() + 3, name: "", article: "", qty: "", diterima: "", price: "", ket: "" }]
         };
 
-        // 2. Buat penyimpan sementara untuk text input per tab
         let tabDataInputs = {
             umum: { customer: "", city: "", faktur: "" },
             tiptop: { customer: "", city: "", faktur: "" },
@@ -407,17 +403,23 @@
                     const lines = content.split('\n'); 
                     if (currentCustomer === 'yogya') {
                         lines.forEach(line => {
+                            // Ekstrak Lokasi / Cabang Yogya
                             if (line.length > 25 && line.substring(13, 14) === 'X') {
-                                let locRaw = line.substring(24, 60).trim();
-                                let cleanLoc = locRaw.replace(/^\d+_/, '').trim();
+                                let locRaw = line.substring(24, 80).trim(); 
+                                // Memisahkan nama cabang dari teks alamat panjang
+                                let cleanLoc = locRaw.replace(/^\d+_/, '').split(/\s{2,}/)[0].trim();
                                 if(cleanLoc) {
                                     document.getElementById('input-city').value = cleanLoc;
                                 }
                             }
+                            // Ekstrak Barang Yogya
                             if (line.length > 35 && line.substring(13, 14) === 'D') {
+                                // PERBAIKAN FINAL: Kembali gunakan 35 agar nama barang tidak terpotong
                                 const articleCode = line.substring(14, 35).trim();
                                 const restOfLine = line.substring(35);
-                                const match = restOfLine.match(/^(.*?)\s+(\d+\.\d+)\s+(\d+\.\d+)/);
+                                
+                                // Regex yang sudah bisa membaca angka .500 atau .250
+                                const match = restOfLine.match(/^(.*?)\s+(\d*\.?\d+)\s+(\d*\.?\d+)/);
                                 
                                 if (match) {
                                     newItems.push({
@@ -453,7 +455,7 @@
                 }
 
                 if (newItems.length > 0) {
-                    items[currentCustomer] = newItems; // Simpan di array sesuai tab yang aktif
+                    items[currentCustomer] = newItems; 
                     renderDynamicInputRows();
                     updateInvoice();
                     alert(`Berhasil! ${newItems.length} barang otomatis diinput beserta data lokasi dan No PO.`);
@@ -467,34 +469,28 @@
         }
 
         function switchCustomer(customerKey) {
-            // 3. SEBELUM PINDAH: Simpan nilai inputan tab yang sekarang sedang dibuka
             if (currentCustomer) {
                 tabDataInputs[currentCustomer].faktur = document.getElementById('input-faktur').value;
                 tabDataInputs[currentCustomer].customer = document.getElementById('input-customer').value;
                 tabDataInputs[currentCustomer].city = document.getElementById('input-city').value;
             }
 
-            // Ganti tab aktif
             currentCustomer = customerKey;
             
-            // 4. SETELAH PINDAH: Panggil dan isi inputan dari tab yang baru diklik
             document.getElementById('input-faktur').value = tabDataInputs[currentCustomer].faktur;
             document.getElementById('input-customer').value = tabDataInputs[currentCustomer].customer;
             document.getElementById('input-city').value = tabDataInputs[currentCustomer].city;
 
-            // Update Placeholder
             document.getElementById('input-faktur').placeholder = "Contoh: " + configs[customerKey].defaultFaktur;
             document.getElementById('input-customer').placeholder = "Contoh: " + configs[customerKey].defaultName;
             document.getElementById('input-city').placeholder = "Contoh: " + configs[customerKey].defaultCity;
 
-            // Reset tombol UI
             document.getElementById('btn-umum').classList.remove('active');
             document.getElementById('btn-tiptop').classList.remove('active');
             document.getElementById('btn-yogya').classList.remove('active');
             document.getElementById('btn-hypermart').classList.remove('active'); 
             document.getElementById(`btn-${customerKey}`).classList.add('active');
 
-            // Setelan Import File
             if (customerKey === 'umum') {
                 document.getElementById('import-upload-group').style.display = 'none';
             } else if (customerKey === 'tiptop') {
@@ -567,7 +563,7 @@
             });
             headerRow += "</tr>";
 
-            let currentItems = items[currentCustomer]; // Gunakan array tab yang aktif
+            let currentItems = items[currentCustomer]; 
             let totalInvoice = 0;
 
             let tableHTML = `<table class="invoice-table">`;
@@ -598,7 +594,6 @@
                 tableHTML += rowHtml + "</tr>";
             });
 
-            // Isi baris kosong jika item kurang dari 11
             for (let i = currentItems.length; i < 11; i++) {
                 let blankRow = "<tr>";
                 config.columns.forEach(col => {
@@ -608,7 +603,6 @@
                 tableHTML += blankRow + "</tr>";
             }
 
-            // Tambahkan baris total
             let totalRow = `<tr class="total-row"><td colspan="${config.columns.length - 1}" class="total-label">JUMLAH</td>`;
             totalRow += `<td class="num-col">${formatNumber(totalInvoice)}</td></tr>`;
             tableHTML += totalRow;
